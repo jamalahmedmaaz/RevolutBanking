@@ -1,5 +1,8 @@
 package com.revolut.exceptions;
 
+/**
+ * The type RevolutBankingServer start exception.
+ */
 public class ServerStartException extends BankingException {
 
     private String message;
@@ -9,12 +12,17 @@ public class ServerStartException extends BankingException {
         return message;
     }
 
+    /**
+     * Sets message.
+     *
+     * @param message the message
+     */
     public void setMessage(String message) {
         this.message = message;
     }
 
     @Override
     public String toString() {
-        return "Server Start Exception: failure reason " + message;
+        return "RevolutBankingServer Start Exception: failure reason " + message;
     }
 }

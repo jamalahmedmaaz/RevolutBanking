@@ -5,6 +5,9 @@ import com.revolut.model.BankingModel;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
+/**
+ * The type Queuing system.
+ */
 public final class QueuingSystem {
 
     private static QueuingSystem instance = null;
@@ -14,6 +17,11 @@ public final class QueuingSystem {
     private QueuingSystem() {
     }
 
+    /**
+     * Gets instance.
+     *
+     * @return the instance
+     */
     public static QueuingSystem getInstance() {
         if (instance == null) {
             synchronized (QueuingSystem.class) {
@@ -33,6 +41,11 @@ public final class QueuingSystem {
         }
     }
 
+    /**
+     * Add transaction into queue.
+     *
+     * @param transaction the transaction
+     */
     public void addTransactionIntoQueue(Transaction transaction) {
         try {
             initialize();
@@ -42,6 +55,9 @@ public final class QueuingSystem {
         }
     }
 
+    /**
+     * The type Event processor.
+     */
     class EventProcessor extends Thread {
         @Override
         public void run() {

@@ -6,27 +6,13 @@ import com.revolut.model.Account;
 import java.io.Serializable;
 
 /**
- * The type Account response dto.
+ * The type Account request dto.
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class AccountResponseDTO implements Serializable {
-    private static final long serialVersionUID = -8149433311577221486L;
+public class AccountRequestDTO implements Serializable {
+    private static final long serialVersionUID = -3110032686622174573L;
+
     private Account account;
-
-    /**
-     * Instantiates a new Account response dto.
-     */
-    public AccountResponseDTO() {
-    }
-
-    /**
-     * Instantiates a new Account response dto.
-     *
-     * @param account the account
-     */
-    public AccountResponseDTO(Account account) {
-        this.account = account;
-    }
 
     /**
      * Gets account.

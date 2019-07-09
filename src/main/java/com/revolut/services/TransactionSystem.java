@@ -1,11 +1,33 @@
 package com.revolut.services;
-import com.revolut.dtos.BankingRequest;
 
+import com.revolut.dtos.BankingRequestDTO;
+
+/**
+ * The interface Transaction system.
+ */
 public interface TransactionSystem {
 
-    void transferMoneyBetweenAccounts(BankingRequest bankingRequest);
+    /**
+     * Transfer money between accounts string.
+     *
+     * @param bankingRequestDTO the banking request dto
+     * @return the string
+     */
+    String transferMoneyBetweenAccounts(BankingRequestDTO bankingRequestDTO);
 
-    void addMoneyIntoAccount(BankingRequest bankingRequest);
+    /**
+     * Add money into account string.
+     *
+     * @param bankingRequestDTO the banking request dto
+     * @return the string
+     */
+    String addMoneyIntoAccount(BankingRequestDTO bankingRequestDTO);
 
-    void deduceMoneyFromAccount(BankingRequest bankingRequest);
+    /**
+     * Deduce money from account string.
+     *
+     * @param bankingRequestDTO the banking request dto
+     * @return the string
+     */
+    String deduceMoneyFromAccount(BankingRequestDTO bankingRequestDTO);
 }

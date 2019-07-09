@@ -1,43 +1,69 @@
 package com.revolut.services;
 
-import com.revolut.dtos.BankingRequest;
+import com.revolut.dtos.BankingRequestDTO;
 import com.revolut.queue.QueuingSystem;
 import com.revolut.queue.Transaction;
 import com.revolut.queue.TransactionType;
 
 import java.util.UUID;
 
+/**
+ * The type Transaction system.
+ */
 public class TransactionSystemImpl implements TransactionSystem {
 
+    private static TransactionSystem transactionSystem;
     private QueuingSystem queuingSystem;
 
-    public TransactionSystemImpl() {
+    private TransactionSystemImpl() {
         this.queuingSystem = QueuingSystem.getInstance();
     }
 
+    /**
+     * Gets transaction system.
+     *
+     * @return the transaction system
+     */
+    public static TransactionSystem getTransactionSystem() {
+        if (transactionSystem == null) {
+            synchronized (BankingServiceImpl.class) {
+                transactionSystem = new TransactionSystemImpl();
+            }
+        }
+        return transactionSystem;
+    }
+
     @Override
-    public void transferMoneyBetweenAccounts(BankingRequest bankingRequest) {
-        queuingSystem.addTransactionIntoQueue(new Transaction(UUID.randomUUID().toString(),
+    public String transferMoneyBetweenAccounts(BankingRequestDTO bankingRequestDTO) {
+        String transactionId = UUID.randomUUID().toString();
+        queuingSystem.addTransactionIntoQueue(new Transaction(transactionId,
                 TransactionType.DEBIT_AND_CREDIT,
-                bankingRequest.getFromAccountId(),
-                bankingRequest.getToAccountId(), bankingRequest.getAmount(),
-                bankingRequest.getTransactionTime()));
+                bankingRequestDTO.getFromAccountId(),
+                bankingRequestDTO.getToAccountId(),
+                bankingRequestDTO.getAmount(),
+                bankingRequestDTO.getTransactionTime()));
+        return transactionId;
     }
 
     @Override
-    public void addMoneyIntoAccount(BankingRequest bankingRequest) {
-        queuingSystem.addTransactionIntoQueue(new Transaction(UUID.randomUUID().toString(),
+    public String addMoneyIntoAccount(BankingRequestDTO bankingRequestDTO) {
+        String transactionId = UUID.randomUUID().toString();
+        queuingSystem.addTransactionIntoQueue(new Transaction(transactionId,
                 TransactionType.CREDIT,
-                bankingRequest.getToAccountId(), null,
-                bankingRequest.getAmount(),
-                bankingRequest.getTransactionTime()));
+                bankingRequestDTO.getToAccountId(), null,
+                bankingRequestDTO.getAmount(),
+                bankingRequestDTO.getTransactionTime()));
+        return transactionId;
     }
 
     @Override
-    public void deduceMoneyFromAccount(BankingRequest bankingRequest) {
-        queuingSystem.addTransactionIntoQueue(new Transaction(UUID.randomUUID().toString(),
+    public String deduceMoneyFromAccount(BankingRequestDTO bankingRequestDTO) {
+        String transactionId = UUID.randomUUID().toString();
+        queuingSystem.addTransactionIntoQueue(new Transaction(transactionId,
                 TransactionType.DEBIT, null,
-                bankingRequest.getToAccountId(), bankingRequest.getAmount(),
-                bankingRequest.getTransactionTime()));
+                bankingRequestDTO.getToAccountId(),
+                bankingRequestDTO.getAmount(),
+                bankingRequestDTO.getTransactionTime()));
+        return transactionId;
     }
 }
