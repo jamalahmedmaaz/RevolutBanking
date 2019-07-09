@@ -47,5 +47,5 @@ performed on it.
 4. Eventual consistent account means, all mutation operations are done based on 
 TIME when the operation was requested/done by an external system or RBS user.
 
-![alt text](https://drive.google.com/file/d/1h0Ni-kNy7JosDULwNHuD5MhFOUVxLG2c/view?usp=sharing)
+![Screenshot](High Level Design.png)
 
