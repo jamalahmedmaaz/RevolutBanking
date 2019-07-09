@@ -47,5 +47,22 @@ performed on it.
 4. Eventual consistent account means, all mutation operations are done based on 
 TIME when the operation was requested/done by an external system or RBS user.
 
+**Technical Details:**
+
+**Frameworks:**
+1. None.
+
+**Server (Tomcat/Jetty ??)**
+1. None - Have build my own Minimum Web Container.
+
+**Libraries:**
+1. Jackson - For String to POJO and POJO to String.
+2. Reflections - for API Delegation.
+3. In-build Java Maps for Model.
+4. In-build Java Multi-threading for handling multiple request.
+
+**Build Tools**
+1. Maven - For building and project.
+
 ![Screenshot](High Level Design.png)
 
