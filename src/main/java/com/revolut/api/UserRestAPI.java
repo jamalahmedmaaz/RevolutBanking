@@ -23,7 +23,7 @@ public class UserRestAPI {
     /**
      * Create user user response dto.
      *
-     * @param requestObject the user request dto
+     * @param requestObject the request object
      * @return the user response dto
      */
     public UserResponseDTO createUser(String requestObject) {
@@ -33,6 +33,12 @@ public class UserRestAPI {
         return new UserResponseDTO(user);
     }
 
+    /**
+     * Update user user response dto.
+     *
+     * @param requestObject the request object
+     * @return the user response dto
+     */
     public UserResponseDTO updateUser(String requestObject) {
         UserRequestDTO userRequestDTO = JsonUtil.readObject(requestObject,
                 UserRequestDTO.class);
@@ -40,6 +46,12 @@ public class UserRestAPI {
         return new UserResponseDTO(user);
     }
 
+    /**
+     * Delete user user response dto.
+     *
+     * @param requestObject the request object
+     * @return the user response dto
+     */
     public UserResponseDTO deleteUser(String requestObject) {
         UserRequestDTO userRequestDTO = JsonUtil.readObject(requestObject,
                 UserRequestDTO.class);

@@ -24,7 +24,9 @@ public class AccountServiceImpl implements AccountService {
     public static AccountService getAccountService() {
         if (accountService == null) {
             synchronized (AccountServiceImpl.class) {
-                accountService = new AccountServiceImpl();
+                if (accountService == null) {
+                    accountService = new AccountServiceImpl();
+                }
             }
         }
         return accountService;
@@ -32,7 +34,7 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public double getBalance(BankingRequestDTO bankingRequestDTO) {
-        return bankingModel.getAccountBalance(bankingRequestDTO.getFromAccountId());
+        return bankingModel.getAccountBalance(bankingRequestDTO.getSourceAccountId());
     }
 
     @Override

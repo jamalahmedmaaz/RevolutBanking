@@ -1,7 +1,7 @@
 package com.revolut.exceptions;
 
 /**
- * The type RevolutBankingServer start exception.
+ * The type Server start exception.
  */
 public class ServerStartException extends BankingException {
 

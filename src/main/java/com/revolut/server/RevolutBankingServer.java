@@ -7,7 +7,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 /**
- * The type RevolutBankingServer.
+ * The type Revolut banking server.
  */
 public class RevolutBankingServer {
 
@@ -15,6 +15,9 @@ public class RevolutBankingServer {
     private final ExecutorService FIXED_THREAD_POOL =
             Executors.newCachedThreadPool();
 
+    /**
+     * Instantiates a new Revolut banking server.
+     */
     public RevolutBankingServer() {
         ApiObjectContainer.instantiateAPIObjects();
     }

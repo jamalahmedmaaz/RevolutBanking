@@ -1,6 +1,5 @@
 package com.revolut.model;
 
-import com.revolut.exceptions.BankingException;
 import com.revolut.queue.Transaction;
 
 import java.time.LocalDateTime;
@@ -31,7 +30,9 @@ public final class BankingModel {
     public static BankingModel getBankingModel() {
         if (bankingModel == null) {
             synchronized (BankingModel.class) {
-                bankingModel = new BankingModel();
+                if (bankingModel == null) {
+                    bankingModel = new BankingModel();
+                }
             }
         }
         return bankingModel;
@@ -44,13 +45,9 @@ public final class BankingModel {
      * @return the account
      */
     public Account createAccount(Account account) {
-        if (accounts.containsKey(account.getAccountId())) {
-            throw new BankingException();
-        } else {
-            String uuid = UUID.randomUUID().toString();
-            account.setAccountId(uuid);
-            accounts.put(uuid, account);
-        }
+        String uuid = UUID.randomUUID().toString();
+        account.setAccountId(uuid);
+        accounts.put(uuid, account);
         return account;
     }
 
@@ -61,14 +58,9 @@ public final class BankingModel {
      * @return the user
      */
     public User createUser(User user) {
-        if (users.containsKey(user.getUserId())) {
-            throw new BankingException();
-        } else {
-            String uuid = UUID.randomUUID().toString();
-            user.setUserId(uuid);
-            users.put(uuid, user);
-        }
-        return user;
+        String uuid = UUID.randomUUID().toString();
+        user.setUserId(uuid);
+        return users.put(uuid, user);
     }
 
     /**
@@ -80,10 +72,8 @@ public final class BankingModel {
      */
     public void addAmountIntoAccount(String accountId, double amount,
                                      LocalDateTime transactionDate) {
-        if (accounts.containsKey(accountId)) {
-            accounts.get(accountId).setAmount(accounts.get(accountId).getAmount() + amount);
-            accounts.get(accountId).setLastTransactionDate(transactionDate);
-        }
+        accounts.get(accountId).setAmount(accounts.get(accountId).getAmount() + amount);
+        accounts.get(accountId).setLastTransactionDate(transactionDate);
     }
 
     /**
@@ -95,10 +85,8 @@ public final class BankingModel {
      */
     public void reduceAmountFromAccount(String accountId, double amount,
                                         LocalDateTime transactionTime) {
-        if (accounts.containsKey(accountId)) {
-            accounts.get(accountId).setAmount(accounts.get(accountId).getAmount() - amount);
-            accounts.get(accountId).setLastTransactionDate(transactionTime);
-        }
+        accounts.get(accountId).setAmount(accounts.get(accountId).getAmount() - amount);
+        accounts.get(accountId).setLastTransactionDate(transactionTime);
     }
 
     /**
@@ -111,7 +99,7 @@ public final class BankingModel {
         if (accounts.containsKey(fromAccountId)) {
             return accounts.get(fromAccountId).getAmount();
         }
-        return 0;
+        return 0.0;
     }
 
     /**
@@ -121,29 +109,71 @@ public final class BankingModel {
      * @return the account
      */
     public Account updateAccount(Account account) {
-        return null;
+        accounts.remove(account.getAccountId());
+        return accounts.put(account.getAccountId(), account);
     }
 
     /**
-     * Delete account.
+     * Delete account boolean.
      *
      * @param accountId the account id
+     * @return the boolean
      */
-    public void deleteAccount(String accountId) {
+    public boolean deleteAccount(String accountId) {
+        Account account = accounts.remove(accountId);
+        return account != null;
     }
 
+    /**
+     * Does account exists boolean.
+     *
+     * @param accountId the account id
+     * @return the boolean
+     */
+    public boolean doesAccountExists(String accountId) {
+        return accounts.containsKey(accountId);
+    }
+
+    /**
+     * Add transaction.
+     *
+     * @param transaction the transaction
+     */
     public void addTransaction(Transaction transaction) {
         transactionMap.put(transaction.getTransactionId(), transaction);
     }
 
+    /**
+     * Update transaction.
+     *
+     * @param transaction the transaction
+     */
     public void updateTransaction(Transaction transaction) {
-        if (transactionMap.containsKey(transaction.getTransactionId()))
+        if (transactionMap.containsKey(transaction.getTransactionId())) {
             transactionMap.put(transaction.getTransactionId(), transaction);
+        }
     }
 
+    /**
+     * Mark transaction completed.
+     *
+     * @param transaction the transaction
+     */
     public void markTransactionCompleted(Transaction transaction) {
-        if (transactionMap.containsKey(transaction.getTransactionId()))
+        if (transactionMap.containsKey(transaction.getTransactionId())) {
             transactionMap.put(transaction.getTransactionId(), transaction);
+        }
     }
 
+    /**
+     * Update user user.
+     *
+     * @param user the user
+     * @return the user
+     */
+    public User updateUser(User user) {
+        users.remove(user.getUserId());
+        users.put(user.getUserId(), user);
+        return users.get(user.getUserId());
+    }
 }

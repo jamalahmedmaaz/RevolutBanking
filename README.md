@@ -62,7 +62,7 @@ TIME when the operation was requested/done by an external system or RBS user.
 4. In-build Java Multi-threading for handling multiple request.
 
 **Build Tools**
-1. Maven - For building and project.
+1. Maven - For building the project.
 
 ![Screenshot](High Level Design.png)
 

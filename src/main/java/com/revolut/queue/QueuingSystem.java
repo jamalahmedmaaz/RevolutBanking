@@ -12,9 +12,10 @@ public final class QueuingSystem {
 
     private static QueuingSystem instance = null;
     private static BlockingQueue<Transaction> eventQueue = null;
-    private static BankingModel bankingModel = BankingModel.getBankingModel();
+    private static BankingModel bankingModel;
 
     private QueuingSystem() {
+        bankingModel = BankingModel.getBankingModel();
     }
 
     /**
@@ -25,7 +26,9 @@ public final class QueuingSystem {
     public static QueuingSystem getInstance() {
         if (instance == null) {
             synchronized (QueuingSystem.class) {
-                instance = new QueuingSystem();
+                if (instance == null) {
+                    instance = new QueuingSystem();
+                }
             }
         }
         return instance;

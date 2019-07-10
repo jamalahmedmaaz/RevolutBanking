@@ -12,21 +12,21 @@ import java.time.LocalDateTime;
 public class BankingRequestDTO implements Serializable {
     private static final long serialVersionUID = 8939109958669455523L;
     private String transactionId;
-    private String toAccountId;
-    private String fromAccountId;
+    private String destinationAccountId;
+    private String sourceAccountId;
     private double amount;
     private LocalDateTime transactionTime;
 
     /**
      * Instantiates a new Banking request dto.
      *
-     * @param toAccountId     the to account id
-     * @param amount          the amount
-     * @param transactionTime the transaction time
+     * @param destinationAccountId the destination account id
+     * @param amount               the amount
+     * @param transactionTime      the transaction time
      */
-    public BankingRequestDTO(String toAccountId, double amount
+    public BankingRequestDTO(String destinationAccountId, double amount
             , LocalDateTime transactionTime) {
-        this.toAccountId = toAccountId;
+        this.destinationAccountId = destinationAccountId;
         this.amount = amount;
         this.transactionTime = transactionTime;
     }
@@ -34,10 +34,17 @@ public class BankingRequestDTO implements Serializable {
     /**
      * Instantiates a new Banking request dto.
      *
-     * @param fromAccountId the from account id
+     * @param sourceAccountId the source account id
      */
-    public BankingRequestDTO(String fromAccountId) {
-        this.fromAccountId = fromAccountId;
+    public BankingRequestDTO(String sourceAccountId) {
+        this.sourceAccountId = sourceAccountId;
+    }
+
+    /**
+     * Instantiates a new Banking request dto.
+     */
+    public BankingRequestDTO() {
+
     }
 
     /**
@@ -59,39 +66,39 @@ public class BankingRequestDTO implements Serializable {
     }
 
     /**
-     * Gets to account id.
+     * Gets destination account id.
      *
-     * @return the to account id
+     * @return the destination account id
      */
-    public String getToAccountId() {
-        return toAccountId;
+    public String getDestinationAccountId() {
+        return destinationAccountId;
     }
 
     /**
-     * Sets to account id.
+     * Sets destination account id.
      *
-     * @param toAccountId the to account id
+     * @param destinationAccountId the destination account id
      */
-    public void setToAccountId(String toAccountId) {
-        this.toAccountId = toAccountId;
+    public void setDestinationAccountId(String destinationAccountId) {
+        this.destinationAccountId = destinationAccountId;
     }
 
     /**
-     * Gets from account id.
+     * Gets source account id.
      *
-     * @return the from account id
+     * @return the source account id
      */
-    public String getFromAccountId() {
-        return fromAccountId;
+    public String getSourceAccountId() {
+        return sourceAccountId;
     }
 
     /**
-     * Sets from account id.
+     * Sets source account id.
      *
-     * @param fromAccountId the from account id
+     * @param sourceAccountId the source account id
      */
-    public void setFromAccountId(String fromAccountId) {
-        this.fromAccountId = fromAccountId;
+    public void setSourceAccountId(String sourceAccountId) {
+        this.sourceAccountId = sourceAccountId;
     }
 
     /**

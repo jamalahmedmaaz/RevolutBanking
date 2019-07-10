@@ -26,7 +26,7 @@ public class AccountRestAPI {
     /**
      * Create account account response dto.
      *
-     * @param requestObject the requestObject
+     * @param requestObject the request object
      * @return the account response dto
      */
     @RevolutApiPath
@@ -39,7 +39,7 @@ public class AccountRestAPI {
     /**
      * Update account account response dto.
      *
-     * @param requestObject the requestObject
+     * @param requestObject the request object
      * @return the account response dto
      */
     @RevolutApiPath
@@ -54,7 +54,7 @@ public class AccountRestAPI {
     /**
      * Delete account account response dto.
      *
-     * @param requestObject the requestObject
+     * @param requestObject the request object
      * @return the account response dto
      */
     @RevolutApiPath

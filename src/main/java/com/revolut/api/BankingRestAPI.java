@@ -26,28 +26,29 @@ public class BankingRestAPI {
     /**
      * Add money banking response dto.
      *
-     * @param requestObject the banking request dto
+     * @param requestObject the request object
      * @return the banking response dto
      */
     @RevolutApiPath
     public BankingResponseDTO addMoney(String requestObject) {
         BankingRequestDTO bankingRequestDTO = JsonUtil.readObject(requestObject,
                 BankingRequestDTO.class);
-        String transactionId = bankingService.addMoney(bankingRequestDTO);
+        String transactionId =
+                bankingService.creditMoneyIntoAccount(bankingRequestDTO);
         return new BankingResponseDTO(transactionId);
     }
 
     /**
      * View balance banking response dto.
      *
-     * @param requestObject the banking request dto
+     * @param requestObject the request object
      * @return the banking response dto
      */
     @RevolutApiPath
     public BankingResponseDTO viewBalance(String requestObject) {
         BankingRequestDTO bankingRequestDTO = JsonUtil.readObject(requestObject,
                 BankingRequestDTO.class);
-        double balance = bankingService.viewBalance(bankingRequestDTO);
+        double balance = bankingService.viewBalanceOfAccount(bankingRequestDTO);
         return new BankingResponseDTO(balance);
     }
 }

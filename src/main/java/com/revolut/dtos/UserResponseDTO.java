@@ -22,6 +22,9 @@ public class UserResponseDTO implements Serializable {
         this.user = user;
     }
 
+    /**
+     * Instantiates a new User response dto.
+     */
     public UserResponseDTO() {
 
     }

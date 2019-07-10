@@ -27,7 +27,9 @@ public class TransactionSystemImpl implements TransactionSystem {
     public static TransactionSystem getTransactionSystem() {
         if (transactionSystem == null) {
             synchronized (BankingServiceImpl.class) {
-                transactionSystem = new TransactionSystemImpl();
+                if (transactionSystem == null) {
+                    transactionSystem = new TransactionSystemImpl();
+                }
             }
         }
         return transactionSystem;
@@ -38,8 +40,8 @@ public class TransactionSystemImpl implements TransactionSystem {
         String transactionId = UUID.randomUUID().toString();
         queuingSystem.addTransactionIntoQueue(new Transaction(transactionId,
                 TransactionType.DEBIT_AND_CREDIT,
-                bankingRequestDTO.getFromAccountId(),
-                bankingRequestDTO.getToAccountId(),
+                bankingRequestDTO.getSourceAccountId(),
+                bankingRequestDTO.getDestinationAccountId(),
                 bankingRequestDTO.getAmount(),
                 bankingRequestDTO.getTransactionTime()));
         return transactionId;
@@ -50,7 +52,7 @@ public class TransactionSystemImpl implements TransactionSystem {
         String transactionId = UUID.randomUUID().toString();
         queuingSystem.addTransactionIntoQueue(new Transaction(transactionId,
                 TransactionType.CREDIT,
-                bankingRequestDTO.getToAccountId(), null,
+                bankingRequestDTO.getDestinationAccountId(), null,
                 bankingRequestDTO.getAmount(),
                 bankingRequestDTO.getTransactionTime()));
         return transactionId;
@@ -61,7 +63,7 @@ public class TransactionSystemImpl implements TransactionSystem {
         String transactionId = UUID.randomUUID().toString();
         queuingSystem.addTransactionIntoQueue(new Transaction(transactionId,
                 TransactionType.DEBIT, null,
-                bankingRequestDTO.getToAccountId(),
+                bankingRequestDTO.getDestinationAccountId(),
                 bankingRequestDTO.getAmount(),
                 bankingRequestDTO.getTransactionTime()));
         return transactionId;

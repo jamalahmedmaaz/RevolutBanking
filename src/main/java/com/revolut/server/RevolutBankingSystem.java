@@ -1,7 +1,7 @@
 package com.revolut.server;
 
 /**
- * The type RevolutBankingSystem.
+ * The type Revolut banking system.
  */
 public class RevolutBankingSystem {
 

@@ -23,7 +23,9 @@ public class UserService {
     public static UserService getUserService() {
         if (userService == null) {
             synchronized (UserService.class) {
-                userService = new UserService();
+                if (userService == null) {
+                    userService = new UserService();
+                }
             }
         }
         return userService;
@@ -39,10 +41,21 @@ public class UserService {
         return bankingModel.createUser(user);
     }
 
+    /**
+     * Update user user.
+     *
+     * @param user the user
+     * @return the user
+     */
     public User updateUser(User user) {
-        return null;
+        return bankingModel.updateUser(user);
     }
 
+    /**
+     * Delete user.
+     *
+     * @param user the user
+     */
     public void deleteUser(User user) {
     }
 }
