@@ -96,13 +96,13 @@ All these scripts executes infinitely.
 **Credit an account**
 ./credit.sh
 
-**Credit an account**
+**Debit an account**
 ./debit.sh
 
-**Credit an account**
+**Transfer Funds**
 ./transfer.sh
 
-**Credit an account**
+**View account**
 ./viewAccount.sh
 
 
@@ -116,5 +116,5 @@ Steps:
 For all what is happening you can check logs for all the scripts executed and
  also server logs.
 
-
-
+**You can checkout the video for more details:**
+Youtube Link: https://www.youtube.com/watch?v=_AdrX2uCvBE&feature=youtu.be
