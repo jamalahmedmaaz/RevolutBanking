@@ -1,4 +1,4 @@
-package com.revolut.queue;
+package com.revolut.model;
 
 import java.time.LocalDateTime;
 
@@ -14,26 +14,30 @@ public class Transaction {
     private Double amount;
     private LocalDateTime createdTime = LocalDateTime.now();
     private LocalDateTime transactionTime;
+    private TransactionStatus transactionStatus = TransactionStatus.NEW;
 
     /**
      * Instantiates a new Transaction.
      *
-     * @param transactionId   the transaction id
-     * @param transactionType the transaction type
-     * @param toAccountId     the to account id
-     * @param fromAccountId   the from account id
-     * @param amount          the amount
-     * @param transactionTime the transaction time
+     * @param transactionId     the transaction id
+     * @param transactionType   the transaction type
+     * @param toAccountId       the to account id
+     * @param fromAccountId     the from account id
+     * @param amount            the amount
+     * @param transactionTime   the transaction time
+     * @param transactionStatus the transaction status
      */
     public Transaction(String transactionId, TransactionType transactionType,
                        String toAccountId, String fromAccountId,
-                       double amount, LocalDateTime transactionTime) {
+                       double amount, LocalDateTime transactionTime,
+                       TransactionStatus transactionStatus) {
         this.transactionId = transactionId;
         this.transactionType = transactionType;
         this.toAccountId = toAccountId;
         this.fromAccountId = fromAccountId;
         this.amount = amount;
         this.transactionTime = transactionTime;
+        this.transactionStatus = transactionStatus;
     }
 
     /**
@@ -179,5 +183,23 @@ public class Transaction {
      */
     public void setFromAccountId(String fromAccountId) {
         this.fromAccountId = fromAccountId;
+    }
+
+    /**
+     * Gets transaction status.
+     *
+     * @return the transaction status
+     */
+    public TransactionStatus getTransactionStatus() {
+        return transactionStatus;
+    }
+
+    /**
+     * Sets transaction status.
+     *
+     * @param transactionStatus the transaction status
+     */
+    public void setTransactionStatus(TransactionStatus transactionStatus) {
+        this.transactionStatus = transactionStatus;
     }
 }

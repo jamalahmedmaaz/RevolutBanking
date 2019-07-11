@@ -1,9 +1,10 @@
 package com.revolut.services;
 
 import com.revolut.dtos.BankingRequestDTO;
+import com.revolut.model.Transaction;
+import com.revolut.model.TransactionStatus;
+import com.revolut.model.TransactionType;
 import com.revolut.queue.QueuingSystem;
-import com.revolut.queue.Transaction;
-import com.revolut.queue.TransactionType;
 
 import java.util.UUID;
 
@@ -27,9 +28,7 @@ public class TransactionSystemImpl implements TransactionSystem {
     public static TransactionSystem getTransactionSystem() {
         if (transactionSystem == null) {
             synchronized (BankingServiceImpl.class) {
-                if (transactionSystem == null) {
-                    transactionSystem = new TransactionSystemImpl();
-                }
+                transactionSystem = new TransactionSystemImpl();
             }
         }
         return transactionSystem;
@@ -43,7 +42,8 @@ public class TransactionSystemImpl implements TransactionSystem {
                 bankingRequestDTO.getSourceAccountId(),
                 bankingRequestDTO.getDestinationAccountId(),
                 bankingRequestDTO.getAmount(),
-                bankingRequestDTO.getTransactionTime()));
+                bankingRequestDTO.getTransactionTime(),
+                TransactionStatus.IN_PROGRESS));
         return transactionId;
     }
 
@@ -54,7 +54,8 @@ public class TransactionSystemImpl implements TransactionSystem {
                 TransactionType.CREDIT,
                 bankingRequestDTO.getDestinationAccountId(), null,
                 bankingRequestDTO.getAmount(),
-                bankingRequestDTO.getTransactionTime()));
+                bankingRequestDTO.getTransactionTime(),
+                TransactionStatus.IN_PROGRESS));
         return transactionId;
     }
 
@@ -65,7 +66,8 @@ public class TransactionSystemImpl implements TransactionSystem {
                 TransactionType.DEBIT, null,
                 bankingRequestDTO.getDestinationAccountId(),
                 bankingRequestDTO.getAmount(),
-                bankingRequestDTO.getTransactionTime()));
+                bankingRequestDTO.getTransactionTime(),
+                TransactionStatus.IN_PROGRESS));
         return transactionId;
     }
 }

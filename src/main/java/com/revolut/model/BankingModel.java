@@ -1,9 +1,8 @@
 package com.revolut.model;
 
-import com.revolut.queue.Transaction;
-
 import java.time.LocalDateTime;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
@@ -16,8 +15,7 @@ public final class BankingModel {
     private static BankingModel bankingModel;
     private Map<String, Account> accounts = new HashMap<>();
     private Map<String, User> users = new HashMap<>();
-    private static Map<String, Transaction> transactionMap =
-            new ConcurrentHashMap<>();
+    private static Map<String, Transaction> ledger = new ConcurrentHashMap<>();
 
     private BankingModel() {
     }
@@ -30,9 +28,7 @@ public final class BankingModel {
     public static BankingModel getBankingModel() {
         if (bankingModel == null) {
             synchronized (BankingModel.class) {
-                if (bankingModel == null) {
-                    bankingModel = new BankingModel();
-                }
+                bankingModel = new BankingModel();
             }
         }
         return bankingModel;
@@ -140,7 +136,7 @@ public final class BankingModel {
      * @param transaction the transaction
      */
     public void addTransaction(Transaction transaction) {
-        transactionMap.put(transaction.getTransactionId(), transaction);
+        ledger.put(transaction.getTransactionId(), transaction);
     }
 
     /**
@@ -149,8 +145,9 @@ public final class BankingModel {
      * @param transaction the transaction
      */
     public void updateTransaction(Transaction transaction) {
-        if (transactionMap.containsKey(transaction.getTransactionId())) {
-            transactionMap.put(transaction.getTransactionId(), transaction);
+        if (ledger.containsKey(transaction.getTransactionId())) {
+            ledger.remove(transaction.getTransactionId(), transaction);
+            ledger.put(transaction.getTransactionId(), transaction);
         }
     }
 
@@ -160,8 +157,8 @@ public final class BankingModel {
      * @param transaction the transaction
      */
     public void markTransactionCompleted(Transaction transaction) {
-        if (transactionMap.containsKey(transaction.getTransactionId())) {
-            transactionMap.put(transaction.getTransactionId(), transaction);
+        if (ledger.containsKey(transaction.getTransactionId())) {
+            ledger.put(transaction.getTransactionId(), transaction);
         }
     }
 
@@ -175,5 +172,57 @@ public final class BankingModel {
         users.remove(user.getUserId());
         users.put(user.getUserId(), user);
         return users.get(user.getUserId());
+    }
+
+    /**
+     * Gets transaction status.
+     *
+     * @param transactionId the transaction id
+     * @return the transaction status
+     */
+    public TransactionStatus getTransactionStatus(String transactionId) {
+        return ledger.get(transactionId).getTransactionStatus();
+    }
+
+    /**
+     * Gets transaction.
+     *
+     * @param transactionId the transaction id
+     * @return the transaction
+     */
+    public Transaction getTransaction(String transactionId) {
+        return ledger.get(transactionId);
+    }
+
+    /**
+     * Delete user.
+     *
+     * @param userId the user id
+     */
+    public void deleteUser(String userId) {
+        if (users.containsKey(userId)) {
+            List<String> accountIds = users.get(userId).getAccounts();
+            accounts.keySet().removeAll(accountIds);
+        }
+    }
+
+    /**
+     * Gets user.
+     *
+     * @param userId the user id
+     * @return the user
+     */
+    public User getUser(String userId) {
+        return users.get(userId);
+    }
+
+    /**
+     * Gets account.
+     *
+     * @param accountId the account id
+     * @return the account
+     */
+    public Account getAccount(String accountId) {
+        return accounts.get(accountId);
     }
 }

@@ -1,6 +1,8 @@
 package com.revolut.queue;
 
 import com.revolut.model.BankingModel;
+import com.revolut.model.Transaction;
+import com.revolut.model.TransactionStatus;
 
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -11,11 +13,11 @@ import java.util.concurrent.LinkedBlockingQueue;
 public final class QueuingSystem {
 
     private static QueuingSystem instance = null;
-    private static BlockingQueue<Transaction> eventQueue = null;
-    private static BankingModel bankingModel;
+    private static BlockingQueue<String> eventQueue = null;
+    private static BankingModel bankingModel = BankingModel.getBankingModel();
 
     private QueuingSystem() {
-        bankingModel = BankingModel.getBankingModel();
+        System.out.print("queue system intitalized .........................");
     }
 
     /**
@@ -26,14 +28,11 @@ public final class QueuingSystem {
     public static QueuingSystem getInstance() {
         if (instance == null) {
             synchronized (QueuingSystem.class) {
-                if (instance == null) {
-                    instance = new QueuingSystem();
-                }
+                instance = new QueuingSystem();
             }
         }
         return instance;
     }
-
     private void initialize() {
         if (eventQueue == null) {
             synchronized (LinkedBlockingQueue.class) {
@@ -52,7 +51,8 @@ public final class QueuingSystem {
     public void addTransactionIntoQueue(Transaction transaction) {
         try {
             initialize();
-            eventQueue.put(transaction);
+            bankingModel.addTransaction(transaction);
+            eventQueue.put(transaction.getTransactionId());
         } catch (InterruptedException interruptedException) {
             interruptedException.printStackTrace();
         }
@@ -67,13 +67,17 @@ public final class QueuingSystem {
             for (; ; ) {
                 Transaction transaction = null;
                 try {
-                    transaction = eventQueue.take();
+                    transaction =
+                            bankingModel.getTransaction(eventQueue.take());
+                    if (transaction == null) {
+                        continue;
+                    }
                     switch (transaction.getTransactionType()) {
                         case CREDIT:
                             bankingModel.addAmountIntoAccount(transaction.getToAccountId(), transaction.getAmount(), transaction.getTransactionTime());
                             break;
                         case DEBIT:
-                            bankingModel.reduceAmountFromAccount(transaction.getToAccountId(),
+                            bankingModel.reduceAmountFromAccount(transaction.getFromAccountId(),
                                     transaction.getAmount(),
                                     transaction.getTransactionTime());
                             break;
@@ -88,6 +92,7 @@ public final class QueuingSystem {
                             }
                             break;
                     }
+                    transaction.setTransactionStatus(TransactionStatus.COMPLETED);
                 } catch (InterruptedException interruptedException) {
                     interruptedException.printStackTrace();
                 }

@@ -1,6 +1,7 @@
 package com.revolut.services;
 
 import com.revolut.dtos.BankingRequestDTO;
+import com.revolut.model.TransactionStatus;
 
 /**
  * The interface Banking service.
@@ -31,18 +32,19 @@ public interface BankingService {
     double viewBalanceOfAccount(BankingRequestDTO bankingRequestDTO);
 
     /**
-     * Check if account exists boolean.
-     *
-     * @param accountId the account id
-     * @return the boolean
-     */
-    boolean checkIfAccountExists(String accountId);
-
-    /**
      * Transfer money from one account to another string.
      *
      * @param bankingRequestDTO the banking request dto
      * @return the string
      */
     String transferMoneyFromOneAccountToAnother(BankingRequestDTO bankingRequestDTO);
+
+    /**
+     * Gets transaction status.
+     *
+     * @param transactionId the transaction id
+     * @return the transaction status
+     */
+    TransactionStatus getTransactionStatus(String transactionId);
+
 }

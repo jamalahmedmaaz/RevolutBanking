@@ -21,6 +21,19 @@ public class UserRestAPI {
     }
 
     /**
+     * Gets user info.
+     *
+     * @param requestObject the request object
+     * @return the user info
+     */
+    public UserResponseDTO getUserInfo(String requestObject) {
+        UserRequestDTO userRequestDTO = JsonUtil.readObject(requestObject,
+                UserRequestDTO.class);
+        User user = userService.getUser(userRequestDTO.getUser());
+        return new UserResponseDTO(user);
+    }
+
+    /**
      * Create user user response dto.
      *
      * @param requestObject the request object

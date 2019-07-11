@@ -22,7 +22,6 @@ public class AccountRestAPI {
     public AccountRestAPI() {
         this.accountService = AccountServiceImpl.getAccountService();
     }
-
     /**
      * Create account account response dto.
      *
@@ -34,21 +33,6 @@ public class AccountRestAPI {
         AccountRequestDTO accountRequestDTO = JsonUtil.readObject(requestObject,
                 AccountRequestDTO.class);
         return new AccountResponseDTO(accountService.createAccount(accountRequestDTO.getAccount()));
-    }
-
-    /**
-     * Update account account response dto.
-     *
-     * @param requestObject the request object
-     * @return the account response dto
-     */
-    @RevolutApiPath
-    public AccountResponseDTO updateAccount(String requestObject) {
-        AccountRequestDTO accountRequestDTO =
-                JsonUtil.readObject(requestObject,
-                        AccountRequestDTO.class);
-        accountService.updateAccount(accountRequestDTO.getAccount());
-        return new AccountResponseDTO();
     }
 
     /**

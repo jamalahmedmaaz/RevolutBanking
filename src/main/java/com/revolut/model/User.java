@@ -11,10 +11,13 @@ import java.util.List;
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class User implements Serializable {
+    private static final long serialVersionUID = -2969314454348145696L;
+
     private UserType userType;
     private String userId;
-    private List<Account> accounts;
+    private List<String> accounts;
     private LocalDateTime createDate = LocalDateTime.now();
+    private UserInfo userInfo;
 
     /**
      * Gets user type.
@@ -57,7 +60,7 @@ public class User implements Serializable {
      *
      * @return the accounts
      */
-    public List<Account> getAccounts() {
+    public List<String> getAccounts() {
         return accounts;
     }
 
@@ -66,7 +69,7 @@ public class User implements Serializable {
      *
      * @param accounts the accounts
      */
-    public void setAccounts(List<Account> accounts) {
+    public void setAccounts(List<String> accounts) {
         this.accounts = accounts;
     }
 

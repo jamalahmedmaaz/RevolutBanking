@@ -37,4 +37,12 @@ public interface AccountService {
      * @param account the account
      */
     void deleteAccount(Account account);
+
+    /**
+     * Gets account.
+     *
+     * @param account the account
+     * @return the account
+     */
+    Account getAccount(Account account);
 }

@@ -1,6 +1,7 @@
 package com.revolut.dtos;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.revolut.model.TransactionStatus;
 
 import java.io.Serializable;
 
@@ -11,6 +12,7 @@ import java.io.Serializable;
 public class BankingResponseDTO implements Serializable {
     private static final long serialVersionUID = 8756492445243105089L;
 
+    private TransactionStatus transactionStatus;
     private double balance;
     private String transactionId;
 
@@ -36,6 +38,15 @@ public class BankingResponseDTO implements Serializable {
      */
     public BankingResponseDTO(double balance) {
         this.balance = balance;
+    }
+
+    /**
+     * Instantiates a new Banking response dto.
+     *
+     * @param transactionStatus the transaction status
+     */
+    public BankingResponseDTO(TransactionStatus transactionStatus) {
+        this.transactionStatus = transactionStatus;
     }
 
     /**
@@ -72,5 +83,23 @@ public class BankingResponseDTO implements Serializable {
      */
     public void setTransactionId(String transactionId) {
         this.transactionId = transactionId;
+    }
+
+    /**
+     * Gets transaction status.
+     *
+     * @return the transaction status
+     */
+    public TransactionStatus getTransactionStatus() {
+        return transactionStatus;
+    }
+
+    /**
+     * Sets transaction status.
+     *
+     * @param transactionStatus the transaction status
+     */
+    public void setTransactionStatus(TransactionStatus transactionStatus) {
+        this.transactionStatus = transactionStatus;
     }
 }

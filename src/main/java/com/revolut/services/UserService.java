@@ -1,5 +1,6 @@
 package com.revolut.services;
 
+import com.revolut.model.Account;
 import com.revolut.model.BankingModel;
 import com.revolut.model.User;
 
@@ -23,9 +24,7 @@ public class UserService {
     public static UserService getUserService() {
         if (userService == null) {
             synchronized (UserService.class) {
-                if (userService == null) {
-                    userService = new UserService();
-                }
+                userService = new UserService();
             }
         }
         return userService;
@@ -38,6 +37,8 @@ public class UserService {
      * @return the user
      */
     public User createUser(User user) {
+        Account account = bankingModel.createAccount(new Account());
+        user.getAccounts().add(account.getAccountId());
         return bankingModel.createUser(user);
     }
 
@@ -57,5 +58,16 @@ public class UserService {
      * @param user the user
      */
     public void deleteUser(User user) {
+        bankingModel.deleteUser(user.getUserId());
+    }
+
+    /**
+     * Gets user.
+     *
+     * @param user the user
+     * @return the user
+     */
+    public User getUser(User user) {
+        return bankingModel.getUser(user.getUserId());
     }
 }

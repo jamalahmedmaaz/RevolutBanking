@@ -18,4 +18,19 @@ public interface ValidationService {
      * @param bankingRequestDTO the banking request dto
      */
     void validateIfAccountHaveSufficientFundsToDebit(BankingRequestDTO bankingRequestDTO);
+
+    /**
+     * Validate if sufficient fund exists.
+     *
+     * @param bankingRequestDTO the banking request dto
+     */
+    void validateIfSufficientFundExists(BankingRequestDTO bankingRequestDTO);
+
+    /**
+     * Validate transaction id.
+     *
+     * @param transactionId the transaction id
+     */
+    void validateTransactionId(String transactionId);
+
 }

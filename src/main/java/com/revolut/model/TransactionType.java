@@ -1,4 +1,4 @@
-package com.revolut.queue;
+package com.revolut.model;
 
 /**
  * The enum Transaction type.

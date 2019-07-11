@@ -24,9 +24,7 @@ public class AccountServiceImpl implements AccountService {
     public static AccountService getAccountService() {
         if (accountService == null) {
             synchronized (AccountServiceImpl.class) {
-                if (accountService == null) {
-                    accountService = new AccountServiceImpl();
-                }
+                accountService = new AccountServiceImpl();
             }
         }
         return accountService;
@@ -50,5 +48,10 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public void deleteAccount(Account account) {
         bankingModel.deleteAccount(account.getAccountId());
+    }
+
+    @Override
+    public Account getAccount(Account account) {
+        return bankingModel.getAccount(account.getAccountId());
     }
 }

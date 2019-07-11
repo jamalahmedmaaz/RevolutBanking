@@ -2,6 +2,7 @@ package com.revolut.services;
 
 import com.revolut.dtos.BankingRequestDTO;
 import com.revolut.model.BankingModel;
+import com.revolut.model.TransactionStatus;
 
 /**
  * The type Banking service.
@@ -12,12 +13,9 @@ public class BankingServiceImpl implements BankingService {
 
     private TransactionSystem transactionSystem;
     private BankingModel bankingModel;
-    private ValidationService validationService;
-
     private BankingServiceImpl() {
         transactionSystem = TransactionSystemImpl.getTransactionSystem();
         bankingModel = BankingModel.getBankingModel();
-        validationService = ValidationServiceImpl.getValidationService();
     }
 
     /**
@@ -28,9 +26,7 @@ public class BankingServiceImpl implements BankingService {
     public static BankingService getBankingService() {
         if (bankingService == null) {
             synchronized (BankingServiceImpl.class) {
-                if (bankingService == null) {
-                    bankingService = new BankingServiceImpl();
-                }
+                bankingService = new BankingServiceImpl();
             }
         }
         return bankingService;
@@ -38,14 +34,12 @@ public class BankingServiceImpl implements BankingService {
 
     @Override
     public String creditMoneyIntoAccount(BankingRequestDTO bankingRequestDTO) {
-        validationService.validateIfAccountExists(bankingRequestDTO.getDestinationAccountId());
         return transactionSystem.addMoneyIntoAccount(bankingRequestDTO);
     }
 
     @Override
     public String debitMoneyFromAccount(BankingRequestDTO bankingRequestDTO) {
-        validationService.validateIfAccountExists(bankingRequestDTO.getDestinationAccountId());
-        return transactionSystem.addMoneyIntoAccount(bankingRequestDTO);
+        return transactionSystem.deduceMoneyFromAccount(bankingRequestDTO);
     }
 
     @Override
@@ -54,13 +48,12 @@ public class BankingServiceImpl implements BankingService {
     }
 
     @Override
-    public boolean checkIfAccountExists(String accountId) {
-        return bankingModel.doesAccountExists(accountId);
+    public String transferMoneyFromOneAccountToAnother(BankingRequestDTO bankingRequestDTO) {
+        return transactionSystem.transferMoneyBetweenAccounts(bankingRequestDTO);
     }
 
     @Override
-    public String transferMoneyFromOneAccountToAnother(BankingRequestDTO bankingRequestDTO) {
-        validationService.validateIfAccountHaveSufficientFundsToDebit(bankingRequestDTO);
-        return transactionSystem.transferMoneyBetweenAccounts(bankingRequestDTO);
+    public TransactionStatus getTransactionStatus(String transactionId) {
+        return bankingModel.getTransactionStatus(transactionId);
     }
 }
