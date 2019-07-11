@@ -31,13 +31,6 @@ public class ValidationServiceImpl implements ValidationService {
     }
 
     @Override
-    public void validateIfAccountExists(String accountId) {
-        if (!bankingModel.doesAccountExists(accountId)) {
-            throw new BankingException("Account doesnt exists");
-        }
-    }
-
-    @Override
     public void validateIfAccountHaveSufficientFundsToDebit(BankingRequestDTO bankingRequestDTO) {
         validateIfAccountExists(bankingRequestDTO.getDestinationAccountId());
         validateIfAccountExists(bankingRequestDTO.getSourceAccountId());
@@ -45,8 +38,17 @@ public class ValidationServiceImpl implements ValidationService {
                 bankingModel.getAccountBalance(bankingRequestDTO.getSourceAccountId());
 
         if (balance < bankingRequestDTO.getAmount()) {
-            throw new BankingException("Insufficient amount in account with " +
+            throw new BankingException("[BANKING_EXCEPTION] Insufficient " +
+                    "amount in account with " +
                     "account Id " + bankingRequestDTO.getSourceAccountId());
+        }
+    }
+
+    @Override
+    public void validateIfAccountExists(String accountId) {
+        if (!bankingModel.doesAccountExists(accountId)) {
+            throw new BankingException("[BANKING_EXCEPTION] Account doesnt " +
+                    "exists");
         }
     }
 
@@ -56,7 +58,8 @@ public class ValidationServiceImpl implements ValidationService {
                 bankingModel.getAccountBalance(bankingRequestDTO.getSourceAccountId());
 
         if (balance < bankingRequestDTO.getAmount()) {
-            throw new BankingException("Insufficient amount in account with " +
+            throw new BankingException("[BANKING_EXCEPTION] Insufficient " +
+                    "amount in account with " +
                     "account Id " + bankingRequestDTO.getSourceAccountId());
         }
     }
@@ -77,7 +80,8 @@ public class ValidationServiceImpl implements ValidationService {
                 bankingModel.getAccountBalance(accountId);
 
         if (balance < amountToDeduce) {
-            throw new BankingException("Insufficient amount in account with " +
+            throw new BankingException("[BANKING_EXCEPTION] Insufficient " +
+                    "amount in account with " +
                     "account Id " + accountId);
         }
     }

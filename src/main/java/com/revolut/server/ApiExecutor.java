@@ -1,5 +1,6 @@
 package com.revolut.server;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.revolut.util.JsonUtil;
 
 import java.io.*;
@@ -30,19 +31,18 @@ public class ApiExecutor implements Runnable {
             InputStream inputStream = socket.getInputStream();
             InputStreamReader inputStreamReader =
                     new InputStreamReader(inputStream);
+            printWriter = new PrintWriter(socket.getOutputStream(), true);
             BufferedReader bufferedReader =
                     new BufferedReader(inputStreamReader);
             String apiName = readApiName(bufferedReader);
             StringBuilder payload = new StringBuilder();
             readPayLoad(bufferedReader, payload);
             Object response = invoke(payload.toString(), apiName);
-
-            new PrintWriter(socket.getOutputStream(), true);
             printWriter.println(JsonUtil.toJsonString(response));
         } catch (Exception e) {
-            printWriter.println("Exception while executing " + e.getMessage());
-            System.out.println("Exception while executing " + e.getMessage());
-            throw new RuntimeException(e);
+            printWriter.println(JsonUtil.toJsonString(new ResponseObject(e.getLocalizedMessage())));
+            System.out.println("Exception while executing " + e.getLocalizedMessage());
+            e.printStackTrace();
         } finally {
             try {
                 socket.close();
@@ -88,7 +88,25 @@ public class ApiExecutor implements Runnable {
         } catch (IllegalAccessException e) {
             throw new RuntimeException(e.getMessage());
         } catch (InvocationTargetException e) {
-            throw new RuntimeException(e.getMessage());
+            throw new RuntimeException(e.getTargetException().getLocalizedMessage());
+        }
+    }
+
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    private class ResponseObject implements Serializable {
+        private static final long serialVersionUID = 2227960462720122781L;
+        private String message;
+
+        public ResponseObject(String localizedMessage) {
+            this.message = localizedMessage;
+        }
+
+        public String getMessage() {
+            return message;
+        }
+
+        public void setMessage(String message) {
+            this.message = message;
         }
     }
 }
