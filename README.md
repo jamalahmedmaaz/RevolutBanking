@@ -64,5 +64,5 @@ TIME when the operation was requested/done by an external system or RBS user.
 **Build Tools**
 1. Maven - For building the project.
 
-![Screenshot](High Level Design.png)
+![High Level Design](https://user-images.githubusercontent.com/3115397/61073406-fe1acc80-a432-11e9-9e78-74d13f6c50eb.png)
 
