@@ -36,6 +36,7 @@ public class BankingRestAPI {
      */
     @RevolutApiPath
     public BankingResponseDTO creditMoney(String requestObject) {
+        System.out.println("[BANKING_CREDIT_REQUEST] credit account called " + requestObject);
         BankingRequestDTO bankingRequestDTO = JsonUtil.readObject(requestObject,
                 BankingRequestDTO.class);
         validationService.validateIfAccountExists(bankingRequestDTO.getDestinationAccountId());
@@ -52,6 +53,7 @@ public class BankingRestAPI {
      */
     @RevolutApiPath
     public BankingResponseDTO debitMoney(String requestObject) {
+        System.out.println("[BANKING_DEBIT_REQUEST] debit account called " + requestObject);
         BankingRequestDTO bankingRequestDTO = JsonUtil.readObject(requestObject,
                 BankingRequestDTO.class);
         validationService.validateIfSufficientFundExists(bankingRequestDTO);
@@ -68,6 +70,7 @@ public class BankingRestAPI {
      */
     @RevolutApiPath
     public BankingResponseDTO transferMoney(String requestObject) {
+        System.out.println("[BANKING_TRANSFER_REQUEST] transfer request" + requestObject);
         BankingRequestDTO bankingRequestDTO = JsonUtil.readObject(requestObject,
                 BankingRequestDTO.class);
         validationService.validateIfAccountHaveSufficientFundsToDebit(bankingRequestDTO);
@@ -84,6 +87,8 @@ public class BankingRestAPI {
      */
     @RevolutApiPath
     public BankingResponseDTO viewBalance(String requestObject) {
+        System.out.println("[BANKING_BALANCE_REQUEST] viewBalance" +
+                " called " + requestObject);
         BankingRequestDTO bankingRequestDTO = JsonUtil.readObject(requestObject,
                 BankingRequestDTO.class);
         validationService.validateIfAccountExists(bankingRequestDTO.getDestinationAccountId());
@@ -99,6 +104,8 @@ public class BankingRestAPI {
      */
     @RevolutApiPath
     public BankingResponseDTO transactionStatus(String requestObject) {
+        System.out.println("[BANKING_TRANSACTION_STATUS_REQUEST] transaction " +
+                "status called " + requestObject);
         BankingRequestDTO bankingRequestDTO = JsonUtil.readObject(requestObject,
                 BankingRequestDTO.class);
         validationService.validateTransactionId(bankingRequestDTO.getTransactionId());

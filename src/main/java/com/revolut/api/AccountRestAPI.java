@@ -31,6 +31,7 @@ public class AccountRestAPI {
      */
     @RevolutApiPath
     public AccountResponseDTO createAccount(String requestObject) {
+        System.out.println("[ACCOUNT] Creating account " + requestObject);
         AccountRequestDTO accountRequestDTO = JsonUtil.readObject(requestObject,
                 AccountRequestDTO.class);
         return new AccountResponseDTO(accountService.createAccount(accountRequestDTO.getAccount()));
@@ -44,6 +45,7 @@ public class AccountRestAPI {
      */
     @RevolutApiPath
     public AccountResponseDTO deleteAccount(String requestObject) {
+        System.out.println("[ACCOUNT] deleting account " + requestObject);
         AccountRequestDTO accountRequestDTO =
                 JsonUtil.readObject(requestObject,
                         AccountRequestDTO.class);

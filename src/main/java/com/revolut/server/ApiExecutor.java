@@ -25,6 +25,7 @@ public class ApiExecutor implements Runnable {
 
     @Override
     public void run() {
+        PrintWriter printWriter = null;
         try {
             InputStream inputStream = socket.getInputStream();
             InputStreamReader inputStreamReader =
@@ -35,10 +36,11 @@ public class ApiExecutor implements Runnable {
             StringBuilder payload = new StringBuilder();
             readPayLoad(bufferedReader, payload);
             Object response = invoke(payload.toString(), apiName);
-            PrintWriter printWriter =
-                    new PrintWriter(socket.getOutputStream(), true);
+
+            new PrintWriter(socket.getOutputStream(), true);
             printWriter.println(JsonUtil.toJsonString(response));
         } catch (Exception e) {
+            printWriter.println("Exception while executing " + e.getMessage());
             System.out.println("Exception while executing " + e.getMessage());
             throw new RuntimeException(e);
         } finally {
