@@ -17,9 +17,9 @@ public class ValidationServiceImpl implements ValidationService {
     }
 
     /**
-     * Gets user service.
+     * Gets validation service.
      *
-     * @return the user service
+     * @return the validation service
      */
     public static ValidationService getValidationService() {
         if (validationService == null) {

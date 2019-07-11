@@ -32,7 +32,7 @@ public interface BankingService {
     double viewBalanceOfAccount(BankingRequestDTO bankingRequestDTO);
 
     /**
-     * Transfer money from one account to another string.
+     * Transfer money from sender to receiver string.
      *
      * @param bankingRequestDTO the banking request dto
      * @return the string

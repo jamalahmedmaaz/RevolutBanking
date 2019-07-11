@@ -20,13 +20,13 @@ public class Transaction {
     /**
      * Instantiates a new Transaction.
      *
-     * @param transactionId     the transaction id
-     * @param transactionType   the transaction type
-     * @param destinationAccountId       the to account id
-     * @param sourceAccountId     the from account id
-     * @param amount            the amount
-     * @param transactionTime   the transaction time
-     * @param transactionStatus the transaction status
+     * @param transactionId        the transaction id
+     * @param transactionType      the transaction type
+     * @param sourceAccountId      the source account id
+     * @param destinationAccountId the destination account id
+     * @param amount               the amount
+     * @param transactionTime      the transaction time
+     * @param transactionStatus    the transaction status
      */
     public Transaction(String transactionId, TransactionType transactionType,
                        String sourceAccountId, String destinationAccountId,
@@ -41,6 +41,16 @@ public class Transaction {
         this.transactionStatus = transactionStatus;
     }
 
+    /**
+     * Instantiates a new Transaction.
+     *
+     * @param transactionId     the transaction id
+     * @param transactionType   the transaction type
+     * @param sourceAccountId   the source account id
+     * @param amount            the amount
+     * @param transactionTime   the transaction time
+     * @param transactionStatus the transaction status
+     */
     public Transaction(String transactionId, TransactionType transactionType,
                        String sourceAccountId, double amount,
                        LocalDateTime transactionTime,
@@ -91,18 +101,18 @@ public class Transaction {
     }
 
     /**
-     * Gets to account id.
+     * Gets destination account id.
      *
-     * @return the to account id
+     * @return the destination account id
      */
     public String getDestinationAccountId() {
         return destinationAccountId;
     }
 
     /**
-     * Sets to account id.
+     * Sets destination account id.
      *
-     * @param destinationAccountId the to account id
+     * @param destinationAccountId the destination account id
      */
     public void setDestinationAccountId(String destinationAccountId) {
         this.destinationAccountId = destinationAccountId;
@@ -163,18 +173,18 @@ public class Transaction {
     }
 
     /**
-     * Gets from account id.
+     * Gets source account id.
      *
-     * @return the from account id
+     * @return the source account id
      */
     public String getSourceAccountId() {
         return sourceAccountId;
     }
 
     /**
-     * Sets from account id.
+     * Sets source account id.
      *
-     * @param sourceAccountId the from account id
+     * @param sourceAccountId the source account id
      */
     public void setSourceAccountId(String sourceAccountId) {
         this.sourceAccountId = sourceAccountId;
@@ -198,6 +208,20 @@ public class Transaction {
         this.transactionStatus = transactionStatus;
     }
 
+    /**
+     * Gets message.
+     *
+     * @return the message
+     */
+    public String getMessage() {
+        return message;
+    }
+
+    /**
+     * Sets message.
+     *
+     * @param message the message
+     */
     public void setMessage(String message) {
         this.message = message;
     }

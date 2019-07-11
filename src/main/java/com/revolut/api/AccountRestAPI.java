@@ -22,6 +22,7 @@ public class AccountRestAPI {
     public AccountRestAPI() {
         this.accountService = AccountServiceImpl.getAccountService();
     }
+
     /**
      * Create account account response dto.
      *

@@ -29,7 +29,7 @@ public class BankingRestAPI {
     }
 
     /**
-     * Add money banking response dto.
+     * Credit money banking response dto.
      *
      * @param requestObject the request object
      * @return the banking response dto
