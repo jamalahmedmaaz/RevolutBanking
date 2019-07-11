@@ -37,7 +37,7 @@ public interface BankingService {
      * @param bankingRequestDTO the banking request dto
      * @return the string
      */
-    String transferMoneyFromOneAccountToAnother(BankingRequestDTO bankingRequestDTO);
+    String transferMoneyFromSenderToReceiver(BankingRequestDTO bankingRequestDTO);
 
     /**
      * Gets transaction status.

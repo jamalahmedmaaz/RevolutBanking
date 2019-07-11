@@ -33,4 +33,12 @@ public interface ValidationService {
      */
     void validateTransactionId(String transactionId);
 
+    /**
+     * Validate if sufficient fund exists.
+     *
+     * @param fromAccountId  the from account id
+     * @param amountToDeduce the amount to deduce
+     */
+    void validateIfSufficientFundExists(String fromAccountId,
+                                        double amountToDeduce);
 }

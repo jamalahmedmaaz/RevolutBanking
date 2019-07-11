@@ -72,7 +72,7 @@ public class BankingRestAPI {
                 BankingRequestDTO.class);
         validationService.validateIfAccountHaveSufficientFundsToDebit(bankingRequestDTO);
         String transactionId =
-                bankingService.transferMoneyFromOneAccountToAnother(bankingRequestDTO);
+                bankingService.transferMoneyFromSenderToReceiver(bankingRequestDTO);
         return new BankingResponseDTO(transactionId);
     }
 

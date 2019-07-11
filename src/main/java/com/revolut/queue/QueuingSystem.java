@@ -3,6 +3,8 @@ package com.revolut.queue;
 import com.revolut.model.BankingModel;
 import com.revolut.model.Transaction;
 import com.revolut.model.TransactionStatus;
+import com.revolut.services.ValidationService;
+import com.revolut.services.ValidationServiceImpl;
 
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -15,6 +17,8 @@ public final class QueuingSystem {
     private static QueuingSystem instance = null;
     private static BlockingQueue<String> eventQueue = null;
     private static BankingModel bankingModel = BankingModel.getBankingModel();
+    private static ValidationService validationService =
+            ValidationServiceImpl.getValidationService();
 
     private QueuingSystem() {
         System.out.print("queue system intitalized .........................");
@@ -58,6 +62,12 @@ public final class QueuingSystem {
         }
     }
 
+    private void checkIfSufficientFundExistsToDeduce(String accountId,
+                                                     double amounToDeduce) {
+        validationService.validateIfSufficientFundExists(accountId,
+                amounToDeduce);
+    }
+
     /**
      * The type Event processor.
      */
@@ -74,27 +84,31 @@ public final class QueuingSystem {
                     }
                     switch (transaction.getTransactionType()) {
                         case CREDIT:
-                            bankingModel.addAmountIntoAccount(transaction.getToAccountId(), transaction.getAmount(), transaction.getTransactionTime());
+                            bankingModel.addAmountIntoAccount(transaction.getSourceAccountId(), transaction.getAmount(), transaction.getTransactionTime());
                             break;
                         case DEBIT:
-                            bankingModel.reduceAmountFromAccount(transaction.getFromAccountId(),
+                            checkIfSufficientFundExistsToDeduce(transaction.getSourceAccountId(), transaction.getAmount());
+                            bankingModel.reduceAmountFromAccount(transaction.getSourceAccountId(),
                                     transaction.getAmount(),
                                     transaction.getTransactionTime());
                             break;
                         case DEBIT_AND_CREDIT:
-                            try {
-                                bankingModel.addAmountIntoAccount(transaction.getToAccountId(), transaction.getAmount(), transaction.getTransactionTime());
-                                bankingModel.reduceAmountFromAccount(transaction.getToAccountId(),
-                                        transaction.getAmount(),
-                                        transaction.getTransactionTime());
-                            } catch (Exception exception) {
-                                System.out.println(exception.getMessage());
-                            }
+
+                            checkIfSufficientFundExistsToDeduce(transaction.getSourceAccountId(), transaction.getAmount());
+                            bankingModel.reduceAmountFromAccount(transaction.getSourceAccountId(),
+                                    transaction.getAmount(),
+                                    transaction.getTransactionTime());
+
+                            bankingModel.addAmountIntoAccount(transaction.getDestinationAccountId(), transaction.getAmount(), transaction.getTransactionTime());
                             break;
                     }
                     transaction.setTransactionStatus(TransactionStatus.COMPLETED);
-                } catch (InterruptedException interruptedException) {
-                    interruptedException.printStackTrace();
+                } catch (Exception exception) {
+                    transaction.setTransactionStatus(TransactionStatus.ERROR);
+                    transaction.setMessage(exception.getMessage());
+                    exception.printStackTrace();
+                    System.out.println("[QUEUE] Exception while executing " +
+                            "transaction, exception message " + exception.getMessage());
                 }
             }
         }

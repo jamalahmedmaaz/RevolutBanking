@@ -70,4 +70,16 @@ public class ValidationServiceImpl implements ValidationService {
         }
     }
 
+    @Override
+    public void validateIfSufficientFundExists(String accountId,
+                                               double amountToDeduce) {
+        double balance =
+                bankingModel.getAccountBalance(accountId);
+
+        if (balance < amountToDeduce) {
+            throw new BankingException("Insufficient amount in account with " +
+                    "account Id " + accountId);
+        }
+    }
+
 }

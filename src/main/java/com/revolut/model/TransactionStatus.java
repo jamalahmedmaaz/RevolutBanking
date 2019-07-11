@@ -15,5 +15,10 @@ public enum TransactionStatus {
     /**
      * Completed transaction status.
      */
-    COMPLETED
+    COMPLETED,
+
+    /**
+     * Error transaction status.
+     */
+    ERROR
 }

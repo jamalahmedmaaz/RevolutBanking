@@ -11,9 +11,12 @@ import java.time.LocalDateTime;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class BankingRequestDTO implements Serializable {
     private static final long serialVersionUID = 8939109958669455523L;
+
     private String transactionId;
-    private String destinationAccountId;
+
     private String sourceAccountId;
+
+    private String destinationAccountId;
     private double amount;
     private LocalDateTime transactionTime;
 
@@ -45,6 +48,17 @@ public class BankingRequestDTO implements Serializable {
      */
     public BankingRequestDTO() {
 
+    }
+
+    /**
+     * Instantiates a new Banking request dto.
+     *
+     * @param accountId the account id
+     * @param amount    the amount
+     */
+    public BankingRequestDTO(String accountId, double amount) {
+        this.sourceAccountId = accountId;
+        this.amount = amount;
     }
 
     /**

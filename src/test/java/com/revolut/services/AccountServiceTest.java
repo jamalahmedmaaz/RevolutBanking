@@ -75,7 +75,7 @@ public class AccountServiceTest {
     private BankingRequestDTO createAddMoneyRequest(String accountId,
                                                     double amount) {
         BankingRequestDTO bankingRequestDTO = new BankingRequestDTO();
-        bankingRequestDTO.setDestinationAccountId(accountId);
+        bankingRequestDTO.setSourceAccountId(accountId);
         bankingRequestDTO.setAmount(amount);
         return bankingRequestDTO;
     }

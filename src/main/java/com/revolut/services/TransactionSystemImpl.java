@@ -52,7 +52,7 @@ public class TransactionSystemImpl implements TransactionSystem {
         String transactionId = UUID.randomUUID().toString();
         queuingSystem.addTransactionIntoQueue(new Transaction(transactionId,
                 TransactionType.CREDIT,
-                bankingRequestDTO.getDestinationAccountId(), null,
+                bankingRequestDTO.getSourceAccountId(),
                 bankingRequestDTO.getAmount(),
                 bankingRequestDTO.getTransactionTime(),
                 TransactionStatus.IN_PROGRESS));
@@ -63,8 +63,8 @@ public class TransactionSystemImpl implements TransactionSystem {
     public String deduceMoneyFromAccount(BankingRequestDTO bankingRequestDTO) {
         String transactionId = UUID.randomUUID().toString();
         queuingSystem.addTransactionIntoQueue(new Transaction(transactionId,
-                TransactionType.DEBIT, null,
-                bankingRequestDTO.getDestinationAccountId(),
+                TransactionType.DEBIT,
+                bankingRequestDTO.getSourceAccountId(),
                 bankingRequestDTO.getAmount(),
                 bankingRequestDTO.getTransactionTime(),
                 TransactionStatus.IN_PROGRESS));

@@ -48,7 +48,7 @@ public class BankingServiceImpl implements BankingService {
     }
 
     @Override
-    public String transferMoneyFromOneAccountToAnother(BankingRequestDTO bankingRequestDTO) {
+    public String transferMoneyFromSenderToReceiver(BankingRequestDTO bankingRequestDTO) {
         return transactionSystem.transferMoneyBetweenAccounts(bankingRequestDTO);
     }
 

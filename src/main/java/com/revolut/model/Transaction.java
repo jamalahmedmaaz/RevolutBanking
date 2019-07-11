@@ -9,54 +9,49 @@ public class Transaction {
 
     private String transactionId;
     private TransactionType transactionType;
-    private String toAccountId;
-    private String fromAccountId;
+    private String destinationAccountId;
+    private String sourceAccountId;
     private Double amount;
     private LocalDateTime createdTime = LocalDateTime.now();
     private LocalDateTime transactionTime;
     private TransactionStatus transactionStatus = TransactionStatus.NEW;
+    private String message;
 
     /**
      * Instantiates a new Transaction.
      *
      * @param transactionId     the transaction id
      * @param transactionType   the transaction type
-     * @param toAccountId       the to account id
-     * @param fromAccountId     the from account id
+     * @param destinationAccountId       the to account id
+     * @param sourceAccountId     the from account id
      * @param amount            the amount
      * @param transactionTime   the transaction time
      * @param transactionStatus the transaction status
      */
     public Transaction(String transactionId, TransactionType transactionType,
-                       String toAccountId, String fromAccountId,
+                       String sourceAccountId, String destinationAccountId,
                        double amount, LocalDateTime transactionTime,
                        TransactionStatus transactionStatus) {
         this.transactionId = transactionId;
         this.transactionType = transactionType;
-        this.toAccountId = toAccountId;
-        this.fromAccountId = fromAccountId;
+        this.destinationAccountId = destinationAccountId;
+        this.sourceAccountId = sourceAccountId;
         this.amount = amount;
         this.transactionTime = transactionTime;
         this.transactionStatus = transactionStatus;
     }
 
-    /**
-     * Instantiates a new Transaction.
-     *
-     * @param transactionId   the transaction id
-     * @param transactionType the transaction type
-     * @param toAccountId     the to account id
-     * @param amount          the amount
-     * @param transactionTime the transaction time
-     */
     public Transaction(String transactionId, TransactionType transactionType,
-                       String toAccountId, double amount,
-                       LocalDateTime transactionTime) {
+                       String sourceAccountId, double amount,
+                       LocalDateTime transactionTime,
+                       TransactionStatus transactionStatus) {
+
         this.transactionId = transactionId;
         this.transactionType = transactionType;
-        this.toAccountId = toAccountId;
+        this.sourceAccountId = sourceAccountId;
         this.amount = amount;
         this.transactionTime = transactionTime;
+        this.transactionStatus = transactionStatus;
     }
 
     /**
@@ -100,17 +95,17 @@ public class Transaction {
      *
      * @return the to account id
      */
-    public String getToAccountId() {
-        return toAccountId;
+    public String getDestinationAccountId() {
+        return destinationAccountId;
     }
 
     /**
      * Sets to account id.
      *
-     * @param toAccountId the to account id
+     * @param destinationAccountId the to account id
      */
-    public void setToAccountId(String toAccountId) {
-        this.toAccountId = toAccountId;
+    public void setDestinationAccountId(String destinationAccountId) {
+        this.destinationAccountId = destinationAccountId;
     }
 
     /**
@@ -172,17 +167,17 @@ public class Transaction {
      *
      * @return the from account id
      */
-    public String getFromAccountId() {
-        return fromAccountId;
+    public String getSourceAccountId() {
+        return sourceAccountId;
     }
 
     /**
      * Sets from account id.
      *
-     * @param fromAccountId the from account id
+     * @param sourceAccountId the from account id
      */
-    public void setFromAccountId(String fromAccountId) {
-        this.fromAccountId = fromAccountId;
+    public void setSourceAccountId(String sourceAccountId) {
+        this.sourceAccountId = sourceAccountId;
     }
 
     /**
@@ -201,5 +196,9 @@ public class Transaction {
      */
     public void setTransactionStatus(TransactionStatus transactionStatus) {
         this.transactionStatus = transactionStatus;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
     }
 }
