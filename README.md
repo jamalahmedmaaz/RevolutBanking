@@ -66,3 +66,55 @@ TIME when the operation was requested/done by an external system or RBS user.
 
 ![High Level Design](https://user-images.githubusercontent.com/3115397/61073406-fe1acc80-a432-11e9-9e78-74d13f6c50eb.png)
 
+**Running the junit cases:
+mvn clean install 
+
+(This will run all test cases and parallel test cases for 
+10 min - you can increase the time by changes the sleep time in test case (BankingServiceTest))
+
+**Starting the server**
+mvn compile
+
+The server will start at 8080.
+
+**Executing API Test Cases:**
+There are scripts which are provided which can used to execute request 
+parallelly.
+1. Creation of accounts (addAccount.sh)
+2. Crediting to account (credit.sh)
+3. Debiting from account (debit.sh)
+4. Transferring funds between two accounts (transfer.sh)
+5. Viewing balance (viewAccount.sh)
+
+All these scripts executes infinitely.
+
+**Examples:**
+
+**Adding account.** (Please see the screenshots)
+./addAccount.sh 
+
+**Credit an account**
+./credit.sh
+
+**Credit an account**
+./debit.sh
+
+**Credit an account**
+./transfer.sh
+
+**Credit an account**
+./viewAccount.sh
+
+
+Steps:
+1. Create few accounts.
+2. Use credit.sh to add funds to any account you wish.
+3. Use debit.sh to debit funds from any account you wish.
+4. If you have created multiple accounts, you can transfer funds between them.
+5. You can continuously view the account balance.
+
+For all what is happening you can check logs for all the scripts executed and
+ also server logs.
+
+
+

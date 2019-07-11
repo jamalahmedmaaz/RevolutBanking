@@ -181,9 +181,9 @@ public class BankingServiceTest {
 
         try {
             /**
-             * 30 Minutes test.
+             * 10 Minutes test.
              */
-            Thread.sleep(12000000);
+            Thread.sleep(600000);
         } catch (InterruptedException e) {
             fail("Exception while sleeping " + e.getMessage());
         }
