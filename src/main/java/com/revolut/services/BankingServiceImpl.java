@@ -56,4 +56,14 @@ public class BankingServiceImpl implements BankingService {
     public TransactionStatus getTransactionStatus(String transactionId) {
         return bankingModel.getTransactionStatus(transactionId);
     }
+
+    @Override
+    public void blockAccount(String accountId) {
+        bankingModel.blockAccount(accountId);
+    }
+
+    @Override
+    public void activateAccount(String accountId) {
+        bankingModel.activateAccount(accountId);
+    }
 }

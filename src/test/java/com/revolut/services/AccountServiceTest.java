@@ -12,27 +12,47 @@ import java.util.UUID;
 
 import static org.junit.Assert.*;
 
+/**
+ * The type Account service test.
+ */
 public class AccountServiceTest {
 
     private AccountService accountService;
     private BankingService bankingService;
+
+    /**
+     * Sets up.
+     *
+     * @throws Exception the exception
+     */
     @Before
     public void setUp() throws Exception {
         accountService = AccountServiceImpl.getAccountService();
         bankingService = BankingServiceImpl.getBankingService();
     }
 
+    /**
+     * Tear down.
+     *
+     * @throws Exception the exception
+     */
     @After
     public void tearDown() throws Exception {
         accountService = null;
     }
 
+    /**
+     * Create account.
+     */
     @Test
     public void createAccount() {
         Account account = accountService.createAccount(createAccountRequest());
         assertNotNull("Account cannnot be null", account);
     }
 
+    /**
+     * Gets balance.
+     */
     @Test
     public void getBalance() {
         Account account = accountService.createAccount(createAccountRequest());
@@ -62,6 +82,9 @@ public class AccountServiceTest {
         assertEquals("Balance should be ", newBalance, newAmount);
     }
 
+    /**
+     * Delete account.
+     */
     @Test
     public void deleteAccount() {
         Account account = accountService.createAccount(createAccountRequest());

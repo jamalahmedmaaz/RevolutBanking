@@ -21,6 +21,7 @@ public class Account implements Serializable {
     private LocalDateTime createDate = LocalDateTime.now();
     private AccountType accountType;
     private AccountSubType accountSubType;
+    private AccountStatus accountStatus = AccountStatus.ACTIVE;
 
     /**
      * Instantiates a new Account.
@@ -181,5 +182,23 @@ public class Account implements Serializable {
      */
     public void setAccountSubType(AccountSubType accountSubType) {
         this.accountSubType = accountSubType;
+    }
+
+    /**
+     * Gets account status.
+     *
+     * @return the account status
+     */
+    public AccountStatus getAccountStatus() {
+        return accountStatus;
+    }
+
+    /**
+     * Sets account status.
+     *
+     * @param accountStatus the account status
+     */
+    public void setAccountStatus(AccountStatus accountStatus) {
+        this.accountStatus = accountStatus;
     }
 }

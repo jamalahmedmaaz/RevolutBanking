@@ -150,4 +150,5 @@ public class BankingRequestDTO implements Serializable {
     public void setTransactionTime(LocalDateTime transactionTime) {
         this.transactionTime = transactionTime;
     }
+
 }

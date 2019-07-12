@@ -97,14 +97,29 @@ public class ApiExecutor implements Runnable {
         private static final long serialVersionUID = 2227960462720122781L;
         private String message;
 
+        /**
+         * Instantiates a new Response object.
+         *
+         * @param localizedMessage the localized message
+         */
         public ResponseObject(String localizedMessage) {
             this.message = localizedMessage;
         }
 
+        /**
+         * Gets message.
+         *
+         * @return the message
+         */
         public String getMessage() {
             return message;
         }
 
+        /**
+         * Sets message.
+         *
+         * @param message the message
+         */
         public void setMessage(String message) {
             this.message = message;
         }

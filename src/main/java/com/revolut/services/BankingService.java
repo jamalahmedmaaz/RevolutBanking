@@ -47,4 +47,17 @@ public interface BankingService {
      */
     TransactionStatus getTransactionStatus(String transactionId);
 
+    /**
+     * Block account.
+     *
+     * @param sourceAccountId the source account id
+     */
+    void blockAccount(String sourceAccountId);
+
+    /**
+     * Unblock account.
+     *
+     * @param sourceAccountId the source account id
+     */
+    void activateAccount(String sourceAccountId);
 }

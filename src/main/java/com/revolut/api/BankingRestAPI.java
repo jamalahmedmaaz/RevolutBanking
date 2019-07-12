@@ -39,7 +39,7 @@ public class BankingRestAPI {
         System.out.println("[BANKING_CREDIT_REQUEST] credit account called " + requestObject);
         BankingRequestDTO bankingRequestDTO = JsonUtil.readObject(requestObject,
                 BankingRequestDTO.class);
-        validationService.validateIfAccountExists(bankingRequestDTO.getSourceAccountId());
+        validationService.validateAccount(bankingRequestDTO.getSourceAccountId());
         String transactionId =
                 bankingService.creditMoneyIntoAccount(bankingRequestDTO);
         return new BankingResponseDTO(transactionId);
@@ -91,7 +91,7 @@ public class BankingRestAPI {
                 " called " + requestObject);
         BankingRequestDTO bankingRequestDTO = JsonUtil.readObject(requestObject,
                 BankingRequestDTO.class);
-        validationService.validateIfAccountExists(bankingRequestDTO.getSourceAccountId());
+        validationService.validateAccount(bankingRequestDTO.getSourceAccountId());
         double balance = bankingService.viewBalanceOfAccount(bankingRequestDTO);
         return new BankingResponseDTO(balance);
     }
@@ -114,4 +114,41 @@ public class BankingRestAPI {
         return new BankingResponseDTO(transactionStatus);
     }
 
+    /**
+     * Block account banking response dto.
+     *
+     * @param requestObject the request object
+     * @return the banking response dto
+     */
+    @RevolutApiPath
+    public BankingResponseDTO blockAccount(String requestObject) {
+        System.out.println("[BANKING_BLOCK_ACCOUNT_REQUEST] block account " + requestObject);
+        BankingRequestDTO bankingRequestDTO =
+                JsonUtil.readObject(requestObject,
+                        BankingRequestDTO.class);
+
+        validationService.validateAccount(bankingRequestDTO.getSourceAccountId());
+        bankingService.blockAccount(bankingRequestDTO.getSourceAccountId());
+
+        return new BankingResponseDTO("Account is Blocked with Account id" + bankingRequestDTO.getSourceAccountId());
+    }
+
+    /**
+     * Activate account banking response dto.
+     *
+     * @param requestObject the request object
+     * @return the banking response dto
+     */
+    @RevolutApiPath
+    public BankingResponseDTO activateAccount(String requestObject) {
+        System.out.println("[BANKING_BLOCK_ACCOUNT_REQUEST] block account " + requestObject);
+        BankingRequestDTO bankingRequestDTO =
+                JsonUtil.readObject(requestObject,
+                        BankingRequestDTO.class);
+
+        validationService.validateAccount(bankingRequestDTO.getSourceAccountId());
+        bankingService.activateAccount(bankingRequestDTO.getSourceAccountId());
+
+        return new BankingResponseDTO("Account is Active with Account id" + bankingRequestDTO.getSourceAccountId());
+    }
 }

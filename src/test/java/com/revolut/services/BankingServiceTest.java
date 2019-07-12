@@ -10,6 +10,9 @@ import java.util.UUID;
 
 import static org.junit.Assert.*;
 
+/**
+ * The type Banking service test.
+ */
 public class BankingServiceTest {
 
     private BankingService bankingService =
@@ -17,6 +20,9 @@ public class BankingServiceTest {
     private AccountService accountService =
             AccountServiceImpl.getAccountService();
 
+    /**
+     * Credit money into account.
+     */
     @Test
     public void creditMoneyIntoAccount() {
 
@@ -49,6 +55,9 @@ public class BankingServiceTest {
 
     }
 
+    /**
+     * Debit money from account.
+     */
     @Test
     public void debitMoneyFromAccount() {
         Account account = accountService.createAccount(createAccountRequest());
@@ -120,6 +129,9 @@ public class BankingServiceTest {
         return bankingRequestDTO;
     }
 
+    /**
+     * Transfer money from one account to another.
+     */
     @Test
     public void transferMoneyFromOneAccountToAnother() {
         /**
@@ -322,6 +334,5 @@ public class BankingServiceTest {
         bankingRequestDTO.setAmount(amount);
         return bankingRequestDTO;
     }
-
 
 }

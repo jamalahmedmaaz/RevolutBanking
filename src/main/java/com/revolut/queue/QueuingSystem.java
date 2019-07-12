@@ -62,12 +62,6 @@ public final class QueuingSystem {
         }
     }
 
-    private void checkIfSufficientFundExistsToDeduce(String accountId,
-                                                     double amounToDeduce) {
-        validationService.validateIfSufficientFundExists(accountId,
-                amounToDeduce);
-    }
-
     /**
      * The type Event processor.
      */
@@ -84,17 +78,33 @@ public final class QueuingSystem {
                     }
                     switch (transaction.getTransactionType()) {
                         case CREDIT:
+                            /**
+                             * Validate the accounts for existence and and are they active.
+                             *
+                             */
+                            validationService.validateAccount(transaction.getSourceAccountId());
                             bankingModel.addAmountIntoAccount(transaction.getSourceAccountId(), transaction.getAmount(), transaction.getTransactionTime());
                             break;
                         case DEBIT:
-                            checkIfSufficientFundExistsToDeduce(transaction.getSourceAccountId(), transaction.getAmount());
+                            /**
+                             * Validate the accounts for existence and and are they active.
+                             *
+                             * Also validate if account have sufficient funds
+                             */
+                            validationService.validateIfSufficientFundExists(transaction.getSourceAccountId(), transaction.getAmount());
                             bankingModel.reduceAmountFromAccount(transaction.getSourceAccountId(),
                                     transaction.getAmount(),
                                     transaction.getTransactionTime());
                             break;
                         case DEBIT_AND_CREDIT:
 
-                            checkIfSufficientFundExistsToDeduce(transaction.getSourceAccountId(), transaction.getAmount());
+                            /**
+                             * Validate both the accounts for existence and and are they active.
+                             *
+                             * Also validate if source account have sufficient funds
+                             */
+                            validateTransferRequest(transaction);
+
                             bankingModel.reduceAmountFromAccount(transaction.getSourceAccountId(),
                                     transaction.getAmount(),
                                     transaction.getTransactionTime());
@@ -111,6 +121,11 @@ public final class QueuingSystem {
                             "transaction, exception message " + exception.getMessage());
                 }
             }
+        }
+
+        private void validateTransferRequest(Transaction transaction) {
+            validationService.validateIfSufficientFundExists(transaction.getSourceAccountId(), transaction.getAmount());
+            validationService.validateAccount(transaction.getDestinationAccountId());
         }
     }
 }

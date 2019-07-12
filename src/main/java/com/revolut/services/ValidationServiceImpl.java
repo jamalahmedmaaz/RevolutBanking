@@ -2,6 +2,7 @@ package com.revolut.services;
 
 import com.revolut.dtos.BankingRequestDTO;
 import com.revolut.exceptions.BankingException;
+import com.revolut.model.AccountStatus;
 import com.revolut.model.BankingModel;
 import com.revolut.model.Transaction;
 /**
@@ -32,28 +33,26 @@ public class ValidationServiceImpl implements ValidationService {
 
     @Override
     public void validateIfAccountHaveSufficientFundsToDebit(BankingRequestDTO bankingRequestDTO) {
-        validateIfAccountExists(bankingRequestDTO.getDestinationAccountId());
-        validateIfAccountExists(bankingRequestDTO.getSourceAccountId());
-        double balance =
-                bankingModel.getAccountBalance(bankingRequestDTO.getSourceAccountId());
-
-        if (balance < bankingRequestDTO.getAmount()) {
-            throw new BankingException("[BANKING_EXCEPTION] Insufficient " +
-                    "amount in account with " +
-                    "account Id " + bankingRequestDTO.getSourceAccountId());
-        }
+        validateAccount(bankingRequestDTO.getDestinationAccountId());
+        validateAccount(bankingRequestDTO.getSourceAccountId());
+        validateIfSufficientFundExists(bankingRequestDTO);
     }
 
     @Override
-    public void validateIfAccountExists(String accountId) {
+    public void validateAccount(String accountId) {
         if (!bankingModel.doesAccountExists(accountId)) {
             throw new BankingException("[BANKING_EXCEPTION] Account doesnt " +
                     "exists");
+        }
+        if (bankingModel.getAccount(accountId).getAccountStatus() != AccountStatus.ACTIVE) {
+            throw new BankingException("[BANKING_EXCEPTION] Cannot Perform the activity, " +
+                    "account is not in active state, please contact admin");
         }
     }
 
     @Override
     public void validateIfSufficientFundExists(BankingRequestDTO bankingRequestDTO) {
+        validateAccount(bankingRequestDTO.getSourceAccountId());
         double balance =
                 bankingModel.getAccountBalance(bankingRequestDTO.getSourceAccountId());
 
@@ -76,6 +75,7 @@ public class ValidationServiceImpl implements ValidationService {
     @Override
     public void validateIfSufficientFundExists(String accountId,
                                                double amountToDeduce) {
+        validateAccount(accountId);
         double balance =
                 bankingModel.getAccountBalance(accountId);
 

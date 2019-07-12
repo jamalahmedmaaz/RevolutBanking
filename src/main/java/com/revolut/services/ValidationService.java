@@ -10,7 +10,7 @@ public interface ValidationService {
      *
      * @param accountId the account id
      */
-    void validateIfAccountExists(String accountId);
+    void validateAccount(String accountId);
 
     /**
      * Validate if account have sufficient funds to debit.

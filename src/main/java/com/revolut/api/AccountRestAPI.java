@@ -52,4 +52,5 @@ public class AccountRestAPI {
         accountService.deleteAccount(accountRequestDTO.getAccount());
         return new AccountResponseDTO();
     }
+
 }

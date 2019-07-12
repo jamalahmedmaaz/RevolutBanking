@@ -225,4 +225,22 @@ public final class BankingModel {
     public Account getAccount(String accountId) {
         return accounts.get(accountId);
     }
+
+    /**
+     * Block account.
+     *
+     * @param accountId the account id
+     */
+    public void blockAccount(String accountId) {
+        accounts.get(accountId).setAccountStatus(AccountStatus.BLOCKED);
+    }
+
+    /**
+     * Activate account.
+     *
+     * @param accountId the account id
+     */
+    public void activateAccount(String accountId) {
+        accounts.get(accountId).setAccountStatus(AccountStatus.ACTIVE);
+    }
 }
