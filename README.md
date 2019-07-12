@@ -67,7 +67,7 @@ TIME when the operation was requested/done by an external system or RBS user.
 ![High Level Design](https://user-images.githubusercontent.com/3115397/61073406-fe1acc80-a432-11e9-9e78-74d13f6c50eb.png)
 
 
-Steps to execute Parallel integration Test cases: (Mimicking Production Like behaviour)
+**Steps to execute Parallel integration Test cases: (Mimicking Production Like behaviour)**
 
 1. Start the server:  mvn compile.
 2. Create accounts: ./addAccount.sh
@@ -78,6 +78,47 @@ Steps to execute Parallel integration Test cases: (Mimicking Production Like beh
 
 For all what is happening you can check logs for all the scripts executed and
  also server logs.
+ 
+ 
+**Running the junit cases:**
+mvn clean install 
+
+(This will run all test cases and parallel test cases for 
+10 min - you can increase the time by changes the sleep time in test case (BankingServiceTest))
+
+**Starting the server**
+mvn compile
+
+The server will start at 8080.
+
+**Executing API Test Cases:**
+There are scripts which are provided which can used to execute request 
+parallely.
+1. Creation of accounts (addAccount.sh)
+2. Crediting to account (credit.sh)
+3. Debiting from account (debit.sh)
+4. Transferring funds between two accounts (transfer.sh)
+5. Viewing balance (viewAccount.sh)
+
+All these scripts executes infinitely.
+
+**Examples:**
+
+**Adding account.** (Please see the screenshots)
+./addAccount.sh 
+
+**Credit an account**
+./credit.sh
+
+**Debit an account**
+./debit.sh
+
+**Transfer Funds**
+./transfer.sh
+
+**View account**
+./viewAccount.sh
+
 
 **You can checkout the video for more details:**
 Youtube Link: https://www.youtube.com/watch?v=beiVZvVVn-s&feature=youtu.be
@@ -144,45 +185,6 @@ Youtube Link: https://www.youtube.com/watch?v=beiVZvVVn-s&feature=youtu.be
 **View Balance Parallel**
 
 ![viewAccountParallel](https://user-images.githubusercontent.com/3115397/61121052-e6d3f180-a4bb-11e9-9741-2acd6787fdbc.png)
-
-**Running the junit cases:
-mvn clean install 
-
-(This will run all test cases and parallel test cases for 
-10 min - you can increase the time by changes the sleep time in test case (BankingServiceTest))
-
-**Starting the server**
-mvn compile
-
-The server will start at 8080.
-
-**Executing API Test Cases:**
-There are scripts which are provided which can used to execute request 
-parallely.
-1. Creation of accounts (addAccount.sh)
-2. Crediting to account (credit.sh)
-3. Debiting from account (debit.sh)
-4. Transferring funds between two accounts (transfer.sh)
-5. Viewing balance (viewAccount.sh)
-
-All these scripts executes infinitely.
-
-**Examples:**
-
-**Adding account.** (Please see the screenshots)
-./addAccount.sh 
-
-**Credit an account**
-./credit.sh
-
-**Debit an account**
-./debit.sh
-
-**Transfer Funds**
-./transfer.sh
-
-**View account**
-./viewAccount.sh
 
 
 
