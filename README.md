@@ -123,6 +123,56 @@ All these scripts executes infinitely.
 **You can checkout the video for more details:**
 Youtube Link: https://www.youtube.com/watch?v=beiVZvVVn-s&feature=youtu.be
 
+
+**Improvement on Design:**
+ 
+ The current design solves the problem and is scalable in the scope of the 
+ problem.
+ 
+ 1. Is the system 100% scalable for multi multi million request: NO.
+ 2. There is a single thread to execute from the queue. Which makes the system
+ dependent on a single thread to execute all transactions.
+ 3. The improvement we can do is TO have multiple threads which reads from queue
+ and execute (lets say 50 threads).
+ 4. But this bring complexity, the complexity here is we need to execute 
+ transactions in time, example: request are coming in the below fashion. 
+ 
+ CA1,DA1,CA2,CA2,DA2,T(1,2),T(2,1)...........CA(n),DA(n),T(n,n)
+ 
+ CA1 = Credit funds to account 1.
+ DA1 = Debit funds from account 1.
+ T1 = Transfer between two accounts
+ 
+ THE CORRECTNESS OF THE SYSTEM IS THE MOST IMPORTANT THING IN BANKING SYSTEM.
+ 
+ If two thread executes two different types of transactions for the same account,
+ we should not allow meaning Credit came first and debit later for account1. It
+ should happen in the same (sequence) time manner.
+ 
+ **How do we solve this problem:**
+ 1. We need two queues, Primary Queue and Priority Queue (this is not java 
+ PriorityQueue).
+ 2. We should have a process lock module which takes lock on account when it 
+ executes a request and not allow other threads to execute any other request 
+ (specially debit or transfer from account1) on the same account.
+ 3. If a thread picks such request it should add it into priority queue.
+ 4. always priority queue transactions should get picked for execution first 
+ and  then other transactions from primary queue should get picked executed.
+ 5. We can improve this solution more and say sequential credits requests can 
+ execute in parallel and have a different kind of process lock which says
+     i. ProcessLock.CREDIT(5) = ProcessLock for credit on any account with 5 
+     parallel request.
+     ii. ProcessLock.DEBIT(1) = ProcessLock for debit on any account with 1 
+     thread execution.
+     iii. ProcessLock.Transfer(1) = ProcessLock for transfer on any account 
+     with 1 thread execution.
+ 
+   **Please find the design document (IF NOT CLEAR WE CAN DISCUSS THIS..)**
+   
+   **Desing Improvements**
+   ![Design Improvemtns](https://user-images.githubusercontent.com/3115397/61146664-2ddfd800-a4f8-11e9-92f4-9e84fe4c5c57.png)
+
+
 **Sequence Diagrams**
 
 **Server**
