@@ -66,6 +66,22 @@ TIME when the operation was requested/done by an external system or RBS user.
 
 ![High Level Design](https://user-images.githubusercontent.com/3115397/61073406-fe1acc80-a432-11e9-9e78-74d13f6c50eb.png)
 
+
+Steps to execute Parallel integration Test cases: (Mimicking Production Like behaviour)
+
+1. Start the server:  mvn compile.
+2. Create accounts: ./addAccount.sh
+3. Use the created account (there id's) to credit funds to them: ./credit.sh
+4. Use the same or different account ids to debit funds: ./debit.sh
+5. Transfer funds from one account to another: ./transfer.sh
+6. View balance for individual accounts: ./viewAccount.sh
+
+For all what is happening you can check logs for all the scripts executed and
+ also server logs.
+
+**You can checkout the video for more details:**
+Youtube Link: https://www.youtube.com/watch?v=beiVZvVVn-s&feature=youtu.be
+
 **Sequence Diagrams**
 
 **Server**
@@ -142,7 +158,7 @@ The server will start at 8080.
 
 **Executing API Test Cases:**
 There are scripts which are provided which can used to execute request 
-parallelly.
+parallely.
 1. Creation of accounts (addAccount.sh)
 2. Crediting to account (credit.sh)
 3. Debiting from account (debit.sh)
@@ -167,20 +183,6 @@ All these scripts executes infinitely.
 
 **View account**
 ./viewAccount.sh
-
-
-Steps:
-1. Create few accounts.
-2. Use credit.sh to add funds to any account you wish.
-3. Use debit.sh to debit funds from any account you wish.
-4. If you have created multiple accounts, you can transfer funds between them.
-5. You can continuously view the account balance.
-
-For all what is happening you can check logs for all the scripts executed and
- also server logs.
-
-**You can checkout the video for more details:**
-Youtube Link: https://www.youtube.com/watch?v=_AdrX2uCvBE&feature=youtu.be
 
 
 

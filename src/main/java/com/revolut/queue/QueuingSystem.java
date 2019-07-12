@@ -16,12 +16,13 @@ public final class QueuingSystem {
 
     private static QueuingSystem instance = null;
     private static BlockingQueue<String> eventQueue = null;
-    private static BankingModel bankingModel = BankingModel.getBankingModel();
-    private static ValidationService validationService =
-            ValidationServiceImpl.getValidationService();
+    private final BankingModel bankingModel;
+    private final ValidationService validationService;
 
     private QueuingSystem() {
-        System.out.print("queue system intitalized .........................");
+        this.bankingModel = BankingModel.getBankingModel();
+        this.validationService =
+                ValidationServiceImpl.getValidationService();
     }
 
     /**

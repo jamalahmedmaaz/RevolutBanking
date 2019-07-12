@@ -50,14 +50,14 @@ public interface BankingService {
     /**
      * Block account.
      *
-     * @param sourceAccountId the source account id
+     * @param accountId the source account id
      */
-    void blockAccount(String sourceAccountId);
+    void blockAccount(String accountId);
 
     /**
      * Unblock account.
      *
-     * @param sourceAccountId the source account id
+     * @param accountId the source account id
      */
-    void activateAccount(String sourceAccountId);
+    void activateAccount(String accountId);
 }

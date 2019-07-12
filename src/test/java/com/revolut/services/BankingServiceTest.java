@@ -1,8 +1,12 @@
 package com.revolut.services;
 
 import com.revolut.dtos.BankingRequestDTO;
+import com.revolut.exceptions.BankingException;
+import com.revolut.exceptions.BankingValidationCode;
 import com.revolut.model.Account;
 import com.revolut.model.TransactionStatus;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 
 import java.util.Random;
@@ -15,10 +19,30 @@ import static org.junit.Assert.*;
  */
 public class BankingServiceTest {
 
-    private BankingService bankingService =
-            BankingServiceImpl.getBankingService();
-    private AccountService accountService =
-            AccountServiceImpl.getAccountService();
+    private BankingService bankingService;
+    private AccountService accountService;
+
+    /**
+     * Sets up.
+     *
+     * @throws Exception the exception
+     */
+    @Before
+    public void setUp() throws Exception {
+        accountService = AccountServiceImpl.getAccountService();
+        bankingService = BankingServiceImpl.getBankingService();
+    }
+
+    /**
+     * Tear down.
+     *
+     * @throws Exception the exception
+     */
+    @After
+    public void tearDown() throws Exception {
+        accountService = null;
+        bankingService = null;
+    }
 
     /**
      * Credit money into account.
@@ -113,21 +137,6 @@ public class BankingServiceTest {
                 (transferAmount - debitAmount), 0.0);
     }
 
-    private BankingRequestDTO createDebitRequest(String accountId,
-                                                 Double debitAmount) {
-        BankingRequestDTO bankingRequestDTO = new BankingRequestDTO();
-        bankingRequestDTO.setSourceAccountId(accountId);
-        bankingRequestDTO.setAmount(debitAmount);
-        return bankingRequestDTO;
-    }
-
-    private BankingRequestDTO createCreditRequest(String accountId,
-                                                  Double transferAmount) {
-        BankingRequestDTO bankingRequestDTO = new BankingRequestDTO();
-        bankingRequestDTO.setSourceAccountId(accountId);
-        bankingRequestDTO.setAmount(transferAmount);
-        return bankingRequestDTO;
-    }
 
     /**
      * Transfer money from one account to another.
@@ -200,6 +209,147 @@ public class BankingServiceTest {
             fail("Exception while sleeping " + e.getMessage());
         }
 
+    }
+
+    @Test
+    public void testCredit_negative() {
+        String nonExistingAccountId = UUID.randomUUID().toString();
+        try {
+            bankingService.creditMoneyIntoAccount(new BankingRequestDTO(""));
+            fail("Should throw exception account Id " + nonExistingAccountId + " doesnt exists");
+        } catch (BankingException bankingException) {
+            assertEquals("Exception should be: " + bankingException.getLocalizedMessage(),
+                    bankingException.getCode(), BankingValidationCode.MISSING_ACCOUNT_ID.getCode());
+        }
+    }
+
+    @Test
+    public void testDebit_negative() {
+        String nonExistingAccountId = UUID.randomUUID().toString();
+        try {
+            bankingService.debitMoneyFromAccount(new BankingRequestDTO(nonExistingAccountId));
+            fail("Should throw exception account Id " + nonExistingAccountId + " doesnt exists");
+        } catch (BankingException bankingException) {
+            assertEquals("Exception should be " + bankingException.getLocalizedMessage(),
+                    BankingValidationCode.ACCOUNT_DOESNT_EXISTS.getCode(), bankingException.getCode());
+        }
+    }
+
+    @Test
+    public void testTransfer_negative() {
+        String nonExistingAccountId = UUID.randomUUID().toString();
+        BankingRequestDTO bankingRequestDTO = createTransferRequestBetweenInternalAccounts(nonExistingAccountId,
+                null, 20.0);
+        try {
+            bankingService.transferMoneyFromSenderToReceiver(bankingRequestDTO);
+            fail("Should throw exception account Id " + BankingValidationCode.MISSING_ACCOUNT_ID);
+        } catch (BankingException bankingException) {
+            assertEquals("Exception should be " + bankingException.getLocalizedMessage(),
+                    BankingValidationCode.MISSING_ACCOUNT_ID.getCode(), bankingException.getCode());
+        }
+
+        bankingRequestDTO.setDestinationAccountId(nonExistingAccountId);
+
+        try {
+            bankingService.transferMoneyFromSenderToReceiver(bankingRequestDTO);
+            fail("Should throw exception account Id " + BankingValidationCode.ACCOUNT_DOESNT_EXISTS);
+        } catch (BankingException bankingException) {
+            assertEquals("Exception should be " + bankingException.getLocalizedMessage(),
+                    BankingValidationCode.ACCOUNT_DOESNT_EXISTS.getCode(), bankingException.getCode());
+        }
+
+        Account senderAccount = accountService.createAccount(createAccountRequest());
+        assertNotNull("Account can not be null", senderAccount);
+        Double transferAmount = 100.0;
+        String transactionId = bankingService.creditMoneyIntoAccount(createCreditRequest(senderAccount.getAccountId(), transferAmount));
+
+        checkTransactionStatus(transactionId);
+
+        bankingRequestDTO.setSourceAccountId(senderAccount.getAccountId());
+        bankingRequestDTO.setDestinationAccountId(senderAccount.getAccountId());
+
+        try {
+            bankingService.transferMoneyFromSenderToReceiver(bankingRequestDTO);
+            fail("Should throw exception account Id " + BankingValidationCode.SENDER_RECEIVER_CANNOT_BE_SAME.getMessage());
+        } catch (BankingException bankingException) {
+            assertEquals("Exception should be " + bankingException.getLocalizedMessage(),
+                    BankingValidationCode.SENDER_RECEIVER_CANNOT_BE_SAME.getCode(), bankingException.getCode());
+        }
+
+        Account receiverAccount = accountService.createAccount(createAccountRequest());
+        assertNotNull("Account can not be null", senderAccount);
+
+        bankingRequestDTO.setSourceAccountId(receiverAccount.getAccountId());
+        bankingRequestDTO.setDestinationAccountId(senderAccount.getAccountId());
+        try {
+            bankingService.transferMoneyFromSenderToReceiver(bankingRequestDTO);
+            fail("Should throw exception account Id " + BankingValidationCode.SENDER_RECEIVER_CANNOT_BE_SAME.getMessage());
+        } catch (BankingException bankingException) {
+            assertEquals("Exception should be " + bankingException.getLocalizedMessage(),
+                    BankingValidationCode.INSUFFICIENT_ACCOUNT_BALANCE.getCode(), bankingException.getCode());
+        }
+
+        bankingRequestDTO.setSourceAccountId(senderAccount.getAccountId());
+        bankingRequestDTO.setDestinationAccountId(receiverAccount.getAccountId());
+
+        bankingService.transferMoneyFromSenderToReceiver(bankingRequestDTO);
+
+        bankingService.blockAccount(senderAccount.getAccountId());
+
+        try {
+            bankingService.transferMoneyFromSenderToReceiver(bankingRequestDTO);
+            fail("Should throw exception account Id " + BankingValidationCode.ACCOUNT_IS_NOT_ACTIVE.getMessage());
+        } catch (BankingException bankingException) {
+            assertEquals("Exception should be " + bankingException.getLocalizedMessage(),
+                    BankingValidationCode.ACCOUNT_IS_NOT_ACTIVE.getCode(), bankingException.getCode());
+        }
+
+        bankingService.activateAccount(senderAccount.getAccountId());
+        bankingRequestDTO.setSourceAccountId(receiverAccount.getAccountId());
+        bankingRequestDTO.setDestinationAccountId(senderAccount.getAccountId());
+        bankingRequestDTO.setAmount(-1.0);
+
+        try {
+            bankingService.transferMoneyFromSenderToReceiver(bankingRequestDTO);
+            fail("Should throw exception account Id " + BankingValidationCode.TRANSFER_AMOUNT_CANNOT_BE_LOW.getMessage());
+        } catch (BankingException bankingException) {
+            assertEquals("Exception should be " + bankingException.getLocalizedMessage(),
+                    BankingValidationCode.TRANSFER_AMOUNT_CANNOT_BE_LOW.getCode(), bankingException.getCode());
+        }
+
+    }
+
+    private BankingRequestDTO createCreditRequest(String accountId,
+                                                  Double transferAmount) {
+        BankingRequestDTO bankingRequestDTO = new BankingRequestDTO();
+        bankingRequestDTO.setSourceAccountId(accountId);
+        bankingRequestDTO.setAmount(transferAmount);
+        return bankingRequestDTO;
+    }
+
+    private void checkTransactionStatus(String transactionId) {
+        TransactionStatus transactionStatus = null;
+        int count = 0;
+        while (true) {
+            transactionStatus =
+                    bankingService.getTransactionStatus(transactionId);
+            if (transactionStatus == TransactionStatus.COMPLETED || transactionStatus == TransactionStatus.ERROR) {
+                break;
+            }
+            try {
+                Thread.sleep(3000);
+                count++;
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+                break;
+            }
+
+            if (count > 10) {
+                break;
+            }
+        }
+        assertTrue("Transaction Errored out",
+                transactionStatus != TransactionStatus.ERROR);
     }
 
     private void continuouslyViewAccountBalance(String accountId) {
@@ -294,17 +444,12 @@ public class BankingServiceTest {
         creditMoneyThread.start();
     }
 
-    private void checkTransactionStatus(String transactionId) {
-        TransactionStatus transactionStatus = null;
-        while (true) {
-            transactionStatus =
-                    bankingService.getTransactionStatus(transactionId);
-            if (transactionStatus == TransactionStatus.COMPLETED || transactionStatus == TransactionStatus.ERROR) {
-                break;
-            }
-        }
-        assertTrue("Transaction Errored out",
-                transactionStatus != TransactionStatus.ERROR);
+    private BankingRequestDTO createDebitRequest(String accountId,
+                                                 Double debitAmount) {
+        BankingRequestDTO bankingRequestDTO = new BankingRequestDTO();
+        bankingRequestDTO.setSourceAccountId(accountId);
+        bankingRequestDTO.setAmount(debitAmount);
+        return bankingRequestDTO;
     }
 
     private BankingRequestDTO createTransferRequestBetweenInternalAccounts(String sourceAccountId, String destinationAccountId, Double amountToTransfer) {
@@ -325,14 +470,6 @@ public class BankingServiceTest {
         Account account = new Account();
         account.setAccountId(UUID.randomUUID().toString());
         return account;
-    }
-
-    private BankingRequestDTO createAddMoneyRequest(String accountId,
-                                                    double amount) {
-        BankingRequestDTO bankingRequestDTO = new BankingRequestDTO();
-        bankingRequestDTO.setSourceAccountId(accountId);
-        bankingRequestDTO.setAmount(amount);
-        return bankingRequestDTO;
     }
 
 }

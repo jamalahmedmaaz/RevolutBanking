@@ -10,7 +10,7 @@ import com.revolut.model.BankingModel;
 public class AccountServiceImpl implements AccountService {
 
     private static AccountService accountService;
-    private BankingModel bankingModel;
+    private final BankingModel bankingModel;
 
     private AccountServiceImpl() {
         this.bankingModel = BankingModel.getBankingModel();

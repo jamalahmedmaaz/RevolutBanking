@@ -14,7 +14,7 @@ import com.revolut.util.JsonUtil;
 @RevolutApi
 public class AccountRestAPI {
 
-    private AccountService accountService;
+    private final AccountService accountService;
 
     /**
      * Instantiates a new Account rest api.

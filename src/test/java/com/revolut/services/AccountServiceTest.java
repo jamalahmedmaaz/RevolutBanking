@@ -39,6 +39,7 @@ public class AccountServiceTest {
     @After
     public void tearDown() throws Exception {
         accountService = null;
+        bankingService = null;
     }
 
     /**
