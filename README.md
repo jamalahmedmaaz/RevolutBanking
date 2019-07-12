@@ -66,6 +66,32 @@ TIME when the operation was requested/done by an external system or RBS user.
 
 ![High Level Design](https://user-images.githubusercontent.com/3115397/61073406-fe1acc80-a432-11e9-9e78-74d13f6c50eb.png)
 
+**Sequence Diagrams**
+**View Balance:**
+![viewBalance](https://user-images.githubusercontent.com/3115397/61118965-7aef8a00-a4b7-11e9-8c96-ff55d084ec37.png)
+
+**Credit Funds**
+![Credit](https://user-images.githubusercontent.com/3115397/61118960-7a56f380-a4b7-11e9-85d0-5dccd909f814.png)
+
+**Debit Funds**
+![debit](https://user-images.githubusercontent.com/3115397/61118961-7a56f380-a4b7-11e9-93cc-36f7d81bd547.png)
+
+**Transfer Funds**
+![transfer](https://user-images.githubusercontent.com/3115397/61118964-7aef8a00-a4b7-11e9-8e12-e160785b4601.png)
+
+**Transaction Status**
+![transactionStatus](https://user-images.githubusercontent.com/3115397/61118962-7aef8a00-a4b7-11e9-9b93-97283f3f00c4.png)
+
+**Block Account**
+![blockAccount](https://user-images.githubusercontent.com/3115397/61118958-7a56f380-a4b7-11e9-89bf-f78a3885d48a.png)
+
+**Activate Account**
+![activateAccount](https://user-images.githubusercontent.com/3115397/61118954-79be5d00-a4b7-11e9-8e7e-7dd1a44488e4.png)
+
+**API Deledgator/Executor**
+![ApiExectorSequence](https://user-images.githubusercontent.com/3115397/61118955-79be5d00-a4b7-11e9-9204-4db2536c9eaf.png)
+
+
 **Running the junit cases:
 mvn clean install 
 
@@ -118,3 +144,7 @@ For all what is happening you can check logs for all the scripts executed and
 
 **You can checkout the video for more details:**
 Youtube Link: https://www.youtube.com/watch?v=_AdrX2uCvBE&feature=youtu.be
+
+
+
+
