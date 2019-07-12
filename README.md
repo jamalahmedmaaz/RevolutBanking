@@ -68,6 +68,10 @@ TIME when the operation was requested/done by an external system or RBS user.
 
 **Sequence Diagrams**
 
+**Server**
+
+![Server](https://user-images.githubusercontent.com/3115397/61119626-e0904600-a4b8-11e9-86dc-6e50612dbbf4.png)
+
 **View Balance:**
 ![viewBalance](https://user-images.githubusercontent.com/3115397/61118965-7aef8a00-a4b7-11e9-8c96-ff55d084ec37.png)
 
@@ -89,9 +93,41 @@ TIME when the operation was requested/done by an external system or RBS user.
 **Activate Account**
 ![activateAccount](https://user-images.githubusercontent.com/3115397/61118954-79be5d00-a4b7-11e9-8e7e-7dd1a44488e4.png)
 
-**API Deledgator/Executor**
+**API Delegate/Executor**
+
 ![ApiExectorSequence](https://user-images.githubusercontent.com/3115397/61118955-79be5d00-a4b7-11e9-9204-4db2536c9eaf.png)
 
+**Queuing System**
+
+![Queuing System](https://user-images.githubusercontent.com/3115397/61120497-bccdff80-a4ba-11e9-8d96-247758d40306.png)
+
+**Test Credit**
+
+![testCredit](https://user-images.githubusercontent.com/3115397/61120678-24844a80-a4bb-11e9-9064-5b1256a4d379.png)
+
+**Test Debit**
+
+![testDebitParallel](https://user-images.githubusercontent.com/3115397/61120693-2f3edf80-a4bb-11e9-8cac-ac32acac7b27.png)
+
+**Test Credit Parallel**
+
+![testCreditParallel](https://user-images.githubusercontent.com/3115397/61121047-e63b5b00-a4bb-11e9-8157-913410a6b695.png)
+
+**Test Debit Parallel**
+
+![testDebitParallel](https://user-images.githubusercontent.com/3115397/61121048-e63b5b00-a4bb-11e9-9992-8bb8a332161c.png)
+
+**Test Transfer Parallel**
+
+![TestTransfer](https://user-images.githubusercontent.com/3115397/61121049-e63b5b00-a4bb-11e9-9188-7f3d6f54ad42.png)
+
+**Test Transfer**
+
+![testTransferAccountParallel](https://user-images.githubusercontent.com/3115397/61121050-e6d3f180-a4bb-11e9-9e55-21faa20aa173.png)
+
+**View Balance Parallel**
+
+![viewAccountParallel](https://user-images.githubusercontent.com/3115397/61121052-e6d3f180-a4bb-11e9-9741-2acd6787fdbc.png)
 
 **Running the junit cases:
 mvn clean install 
