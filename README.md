@@ -67,6 +67,7 @@ TIME when the operation was requested/done by an external system or RBS user.
 ![High Level Design](https://user-images.githubusercontent.com/3115397/61073406-fe1acc80-a432-11e9-9e78-74d13f6c50eb.png)
 
 **Sequence Diagrams**
+
 **View Balance:**
 ![viewBalance](https://user-images.githubusercontent.com/3115397/61118965-7aef8a00-a4b7-11e9-8c96-ff55d084ec37.png)
 
