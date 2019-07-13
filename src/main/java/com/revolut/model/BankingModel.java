@@ -12,7 +12,7 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public final class BankingModel {
 
-    private static BankingModel bankingModel;
+    private static volatile BankingModel bankingModel;
     private Map<String, Account> accounts = new HashMap<>();
     private Map<String, User> users = new HashMap<>();
     private static Map<String, Transaction> ledger = new ConcurrentHashMap<>();
@@ -28,7 +28,9 @@ public final class BankingModel {
     public static BankingModel getBankingModel() {
         if (bankingModel == null) {
             synchronized (BankingModel.class) {
-                bankingModel = new BankingModel();
+                if (bankingModel == null) {
+                    bankingModel = new BankingModel();
+                }
             }
         }
         return bankingModel;

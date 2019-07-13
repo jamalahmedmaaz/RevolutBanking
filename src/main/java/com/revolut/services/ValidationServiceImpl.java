@@ -11,7 +11,7 @@ import com.revolut.model.Transaction;
  */
 public class ValidationServiceImpl implements ValidationService {
 
-    private static ValidationServiceImpl validationService;
+    private static volatile ValidationServiceImpl validationService;
     private final BankingModel bankingModel;
 
     private ValidationServiceImpl() {
@@ -26,7 +26,9 @@ public class ValidationServiceImpl implements ValidationService {
     public static ValidationService getValidationService() {
         if (validationService == null) {
             synchronized (ValidationServiceImpl.class) {
-                validationService = new ValidationServiceImpl();
+                if (validationService == null) {
+                    validationService = new ValidationServiceImpl();
+                }
             }
         }
         return validationService;
@@ -57,12 +59,12 @@ public class ValidationServiceImpl implements ValidationService {
 
     @Override
     public void validateIfSufficientFundExists(String accountId,
-                                               double amountToDeduce) {
+                                               double amountToDeduct) {
         validateAccount(accountId);
         double balance =
                 bankingModel.getAccountBalance(accountId);
 
-        if (balance < amountToDeduce) {
+        if (balance < amountToDeduct) {
             throw new BankingException(BankingValidationCode.INSUFFICIENT_ACCOUNT_BALANCE, "Requested Account Id" + accountId);
         }
     }

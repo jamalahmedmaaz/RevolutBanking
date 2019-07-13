@@ -9,7 +9,7 @@ import com.revolut.model.BankingModel;
  */
 public class AccountServiceImpl implements AccountService {
 
-    private static AccountService accountService;
+    private static volatile AccountService accountService;
     private final BankingModel bankingModel;
 
     private AccountServiceImpl() {
@@ -24,7 +24,9 @@ public class AccountServiceImpl implements AccountService {
     public static AccountService getAccountService() {
         if (accountService == null) {
             synchronized (AccountServiceImpl.class) {
-                accountService = new AccountServiceImpl();
+                if (accountService == null) {
+                    accountService = new AccountServiceImpl();
+                }
             }
         }
         return accountService;

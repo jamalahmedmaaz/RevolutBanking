@@ -14,8 +14,8 @@ import java.util.concurrent.LinkedBlockingQueue;
  */
 public final class QueuingSystem {
 
-    private static QueuingSystem instance = null;
-    private static BlockingQueue<String> eventQueue = null;
+    private static volatile QueuingSystem instance = null;
+    private static volatile BlockingQueue<String> eventQueue = null;
     private final BankingModel bankingModel;
     private final ValidationService validationService;
 
@@ -33,7 +33,9 @@ public final class QueuingSystem {
     public static QueuingSystem getInstance() {
         if (instance == null) {
             synchronized (QueuingSystem.class) {
-                instance = new QueuingSystem();
+                if (instance == null) {
+                    instance = new QueuingSystem();
+                }
             }
         }
         return instance;
@@ -41,10 +43,12 @@ public final class QueuingSystem {
     private void initialize() {
         if (eventQueue == null) {
             synchronized (LinkedBlockingQueue.class) {
-                eventQueue = new LinkedBlockingQueue<>();
+                if (eventQueue == null) {
+                    eventQueue = new LinkedBlockingQueue<>();
+                    EventProcessor eventProcessor = new EventProcessor();
+                    eventProcessor.start();
+                }
             }
-            EventProcessor eventProcessor = new EventProcessor();
-            eventProcessor.start();
         }
     }
 

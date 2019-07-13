@@ -9,7 +9,7 @@ import com.revolut.model.TransactionStatus;
  */
 public class BankingServiceImpl implements BankingService {
 
-    private static BankingService bankingService;
+    private static volatile BankingService bankingService;
 
     private final ValidationService validationService;
     private final TransactionSystem transactionSystem;
@@ -28,7 +28,9 @@ public class BankingServiceImpl implements BankingService {
     public static BankingService getBankingService() {
         if (bankingService == null) {
             synchronized (BankingServiceImpl.class) {
-                bankingService = new BankingServiceImpl();
+                if (bankingService == null) {
+                    bankingService = new BankingServiceImpl();
+                }
             }
         }
         return bankingService;

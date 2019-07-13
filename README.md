@@ -34,7 +34,7 @@ compete with each other for execution). (side node: threads on multicore will
 4. Synchronization on threads will block other threads.
 
 **System Goals: Design Approach:**
-1. We can deduce from the scope that there will be two type of request, one 
+1. We can deduct from the scope that there will be two type of request, one 
 which reads data and another mutates data. And for our use case read (view 
 balance) and mutation (credit or debit money to/from account) are connected. As 
 read compete with writes based on how we have scoped our requirements. We need to 
@@ -72,10 +72,10 @@ TIME when the operation was requested/done by an external system or RBS user.
 
 
 **Running the junit cases:**
-mvn clean install 
+mvn clean test 
 
 **Starting the server**
-mvn compile
+mvn exec:java -Dexec.mainClass="com.revolut.server.RevolutBankingSystem"
 
 The server will start at 8080.
 

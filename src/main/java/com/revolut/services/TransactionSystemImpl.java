@@ -13,7 +13,7 @@ import java.util.UUID;
  */
 public class TransactionSystemImpl implements TransactionSystem {
 
-    private static TransactionSystem transactionSystem;
+    private static volatile TransactionSystem transactionSystem;
     private QueuingSystem queuingSystem;
 
     private TransactionSystemImpl() {
@@ -27,8 +27,10 @@ public class TransactionSystemImpl implements TransactionSystem {
      */
     public static TransactionSystem getTransactionSystem() {
         if (transactionSystem == null) {
-            synchronized (BankingServiceImpl.class) {
-                transactionSystem = new TransactionSystemImpl();
+            synchronized (TransactionSystemImpl.class) {
+                if (transactionSystem == null) {
+                    transactionSystem = new TransactionSystemImpl();
+                }
             }
         }
         return transactionSystem;

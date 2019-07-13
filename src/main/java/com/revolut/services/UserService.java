@@ -9,7 +9,7 @@ import com.revolut.model.User;
  */
 public class UserService {
 
-    private static UserService userService;
+    private static volatile UserService userService;
     private BankingModel bankingModel;
 
     private UserService() {
@@ -24,7 +24,9 @@ public class UserService {
     public static UserService getUserService() {
         if (userService == null) {
             synchronized (UserService.class) {
-                userService = new UserService();
+                if (userService == null) {
+                    userService = new UserService();
+                }
             }
         }
         return userService;

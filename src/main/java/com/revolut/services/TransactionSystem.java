@@ -24,7 +24,7 @@ public interface TransactionSystem {
     String addMoneyIntoAccount(BankingRequestDTO bankingRequestDTO);
 
     /**
-     * Deduce money from account string.
+     * Deduct money from account string.
      *
      * @param bankingRequestDTO the banking request dto
      * @return the string
