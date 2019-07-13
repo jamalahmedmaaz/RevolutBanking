@@ -49,7 +49,9 @@ public class BankingServiceTest {
      */
     @Test
     public void creditMoneyIntoAccount() {
-
+        /**
+         * Create an account
+         */
         Account account = accountService.createAccount(createAccountRequest());
         assertNotNull("Account can not be null", account);
 
@@ -57,26 +59,35 @@ public class BankingServiceTest {
         BankingRequestDTO bankingRequestDTO =
                 createCreditRequest(account.getAccountId());
         Double balance = accountService.getBalance(bankingRequestDTO);
+
+        /**
+         * The default balance for an account should be 0.0
+         */
         assertEquals("Balance should be equal to " + account + " for " +
                         "newly created account",
                 balance, actual);
 
         Double transferAmount = 100.0;
 
+        /**
+         * Credit funds into this newly created account.
+         *
+         */
         String transactionId =
                 bankingService.creditMoneyIntoAccount(createCreditRequest(account.getAccountId(), transferAmount));
 
         assertNotNull("transaction id cannot be null", transactionId);
 
-        TransactionStatus transactionStatus = null;
-        while (transactionStatus != TransactionStatus.COMPLETED) {
-            transactionStatus =
-                    bankingService.getTransactionStatus(transactionId);
-        }
+        /**
+         * Check transaction status, if the transaction completed or errored out.
+         */
+        checkTransactionStatus(transactionId);
 
+        /**
+         * Check the balance of an the account
+         */
         Double newBalance = accountService.getBalance(bankingRequestDTO);
         assertEquals("Balance should be ", newBalance, transferAmount);
-
     }
 
     /**
@@ -84,6 +95,9 @@ public class BankingServiceTest {
      */
     @Test
     public void debitMoneyFromAccount() {
+        /**
+         * Create account
+         */
         Account account = accountService.createAccount(createAccountRequest());
         assertNotNull("Account can not be null", account);
 
@@ -102,11 +116,7 @@ public class BankingServiceTest {
 
         assertNotNull("transaction id cannot be null", creditTransactionId);
 
-        TransactionStatus transactionStatus = null;
-        while (transactionStatus != TransactionStatus.COMPLETED) {
-            transactionStatus =
-                    bankingService.getTransactionStatus(creditTransactionId);
-        }
+        checkTransactionStatus(creditTransactionId);
 
         Double balanceAfterTransfer =
                 accountService.getBalance(bankingRequestDTO);
@@ -120,19 +130,21 @@ public class BankingServiceTest {
         Double newBalance = accountService.getBalance(bankingRequestDTO);
         assertEquals("Balance should be ", newBalance, transferAmount);
 
+        /**
+         * Debit from the account.
+         */
         String debitTransactionId =
                 bankingService.debitMoneyFromAccount(createDebitRequest(account.getAccountId(), debitAmount));
 
         assertNotNull("transaction id cannot be null", debitTransactionId);
 
-        TransactionStatus debitTransactionStatus = null;
-        while (debitTransactionStatus != TransactionStatus.COMPLETED) {
-            debitTransactionStatus =
-                    bankingService.getTransactionStatus(debitTransactionId);
-        }
+        checkTransactionStatus(debitTransactionId);
 
         double currentBalance = accountService.getBalance(bankingRequestDTO);
 
+        /**
+         * Validate if the money for correct debited.
+         */
         assertEquals("Balance should be ", currentBalance,
                 (transferAmount - debitAmount), 0.0);
     }
@@ -164,7 +176,7 @@ public class BankingServiceTest {
 
         double amountToTransfer = 100.0;
         // Keep Sender Original Balance.
-        double orginalSenderBalance =
+        double originalSenderBalance =
                 bankingService.viewBalanceOfAccount(new BankingRequestDTO(senderAccount.getAccountId()));
 
         //Transfer money from one account to another.
@@ -182,7 +194,7 @@ public class BankingServiceTest {
         assertTrue("Balance Cannot be negative ", receiverAccountBalance >= 0);
 
         assertEquals("Correct transfer didnt happen",
-                (orginalSenderBalance - amountToTransfer),
+                (originalSenderBalance - amountToTransfer),
                 senderAccountBalance, 0.0);
 
         assertEquals("In Correct transfer ", (amountToTransfer),
