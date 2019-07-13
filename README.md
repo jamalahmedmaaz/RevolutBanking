@@ -97,6 +97,7 @@ Youtube Link: https://www.youtube.com/watch?v=beiVZvVVn-s&feature=youtu.be
 NOTE: To user/reviewer, the api exposed are as system, you can do any activity 
 before after another, and the system continues to stay available and eventual
  consistent (accounts).
+If it is not clear, please look the API section of code for more API details.
  
 (This will run all test cases and parallel test cases for 
 10 min - you can increase the time by changes the sleep time in test case (BankingServiceTest))
