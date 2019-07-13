@@ -18,6 +18,8 @@ public class User implements Serializable {
     private List<String> accounts;
     private LocalDateTime createDate = LocalDateTime.now();
     private UserInfo userInfo;
+    private Gender gender;
+    private Salutation salutation;
 
     /**
      * Gets user type.
@@ -89,5 +91,59 @@ public class User implements Serializable {
      */
     public void setCreateDate(LocalDateTime createDate) {
         this.createDate = createDate;
+    }
+
+    /**
+     * Gets user info.
+     *
+     * @return the user info
+     */
+    public UserInfo getUserInfo() {
+        return userInfo;
+    }
+
+    /**
+     * Sets user info.
+     *
+     * @param userInfo the user info
+     */
+    public void setUserInfo(UserInfo userInfo) {
+        this.userInfo = userInfo;
+    }
+
+    /**
+     * Gets gender.
+     *
+     * @return the gender
+     */
+    public Gender getGender() {
+        return gender;
+    }
+
+    /**
+     * Sets gender.
+     *
+     * @param gender the gender
+     */
+    public void setGender(Gender gender) {
+        this.gender = gender;
+    }
+
+    /**
+     * Gets salutation.
+     *
+     * @return the salutation
+     */
+    public Salutation getSalutation() {
+        return salutation;
+    }
+
+    /**
+     * Sets salutation.
+     *
+     * @param salutation the salutation
+     */
+    public void setSalutation(Salutation salutation) {
+        this.salutation = salutation;
     }
 }
