@@ -67,7 +67,9 @@ TIME when the operation was requested/done by an external system or RBS user.
 ![High Level Design](https://user-images.githubusercontent.com/3115397/61073406-fe1acc80-a432-11e9-9e78-74d13f6c50eb.png)
 
 **Data Model**
-![Data Model Diagram Revolut](https://user-images.githubusercontent.com/3115397/61169361-f0bc2a00-a579-11e9-98f8-23058a2867dc.png)
+
+![Data Model](https://user-images.githubusercontent.com/3115397/61170446-bb6a0900-a586-11e9-9dc9-c1bf5cc8d916.png)
+
 
 **Running the junit cases:**
 mvn clean install 
